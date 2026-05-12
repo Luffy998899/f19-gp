@@ -1,139 +1,105 @@
+"use client"
+
 import Image from "next/image"
-import { ArrowUpRight, Zap, ShieldCheck, Wrench } from "lucide-react"
+import { useState } from "react"
+import { ArrowRight, Search } from "lucide-react"
 
 interface HeroSectionProps {
   content: Record<string, string>
 }
 
+const TABS = [
+  { id: "vehicle", label: "Search by Vehicle", fields: ["Year", "Make", "Model", "Submodel", "Option"] },
+  { id: "wheel", label: "Search by Wheel", fields: ["Diameter", "Width", "Bolt Pattern", "Offset"] },
+  { id: "tire", label: "Search by Tire", fields: ["Width", "Profile", "Diameter", "Season"] },
+  { id: "keywords", label: "Search by Keywords", fields: ["Keyword"] },
+]
+
 export function HeroSection({ content }: HeroSectionProps) {
+  const [activeTab, setActiveTab] = useState("vehicle")
+  const tab = TABS.find((t) => t.id === activeTab) ?? TABS[0]
+
   return (
     <section id="top" className="relative bg-background overflow-hidden">
-      <div className="mx-auto max-w-[1400px] px-6 pt-10 pb-16 lg:pt-14 lg:pb-24">
-        {/* Top meta bar */}
-        <div className="flex items-center justify-between mb-8 font-mono text-[11px] uppercase tracking-[0.2em] text-muted-foreground">
-          <div className="flex items-center gap-2">
-            <span className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse" />
-            Now Servicing — Kelowna, BC
+      {/* Background image */}
+      <div className="absolute inset-0">
+        <Image
+          src="/images/hero-car.jpg"
+          alt="Performance vehicle at our showroom"
+          fill
+          priority
+          className="object-cover object-right"
+        />
+        <div className="absolute inset-0 bg-gradient-to-r from-background via-background/85 to-background/10" />
+      </div>
+
+      <div className="relative mx-auto max-w-[1400px] px-6 pt-16 pb-12 lg:pt-24 lg:pb-20 min-h-[620px] lg:min-h-[720px] flex flex-col justify-end">
+        {/* Headline block */}
+        <div className="max-w-3xl">
+          <div className="inline-flex items-center gap-3 mb-6">
+            <span className="w-2 h-2 rounded-full bg-primary animate-pulse" />
+            <span className="font-mono text-[11px] uppercase tracking-[0.25em] text-foreground/80">
+              Spring Wheel & Tire Event
+            </span>
           </div>
-          <div className="hidden md:block">Est. 2014 / N° 0719</div>
+          <h1 className="font-display uppercase text-foreground leading-[0.9] tracking-tight text-[clamp(2.75rem,7vw,5.75rem)]">
+            Wheels & Tires
+            <br />
+            Sale{" "}
+            <span className="inline-flex items-center bg-primary text-primary-foreground px-4 py-1 align-middle">
+              Up to 75% Off
+            </span>
+          </h1>
+          <p className="mt-6 max-w-xl text-base lg:text-lg text-foreground/70 leading-relaxed">
+            {content.hero_description ||
+              "Find the perfect set for your ride. Free shipping across BC on orders over $1,000. Certified install at our Kelowna shop."}
+          </p>
         </div>
 
-        {/* Main grid */}
-        <div className="grid lg:grid-cols-12 gap-10 lg:gap-12 items-center">
-          {/* Left content */}
-          <div className="lg:col-span-7">
-            <div className="flex items-center gap-3 mb-6">
-              <span className="font-mono text-[10px] uppercase tracking-[0.25em] bg-primary text-primary-foreground px-3 py-1.5">
-                All About Tires
-              </span>
-              <span className="font-mono text-[10px] uppercase tracking-[0.25em] text-muted-foreground">
-                Performance Division
-              </span>
-            </div>
-
-            <h1 className="font-display text-foreground uppercase leading-[0.95] tracking-tight text-[clamp(1.875rem,4.5vw,3.25rem)] max-w-[18ch]">
-              Built for the road. Engineered for
-              <span className="text-primary"> the track.</span>
-            </h1>
-
-            <p className="mt-7 max-w-xl text-base lg:text-lg text-muted-foreground leading-relaxed">
-              {content.hero_description ||
-                "Kelowna's most trusted shop for performance tires, alloy wheels, and certified service. From your daily commute to your weekend autocross — we keep you planted."}
-            </p>
-
-            <div className="mt-8 flex flex-wrap gap-3">
-              <a
-                href="#products"
-                className="group inline-flex items-center gap-2.5 bg-primary text-primary-foreground px-6 py-3.5 font-display text-base uppercase tracking-wider hover:bg-foreground hover:text-background transition-colors"
-              >
-                Shop Tires
-                <ArrowUpRight className="w-4 h-4 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
-              </a>
-              <a
-                href="#contact"
-                className="group inline-flex items-center gap-2.5 border-2 border-foreground text-foreground px-6 py-3.5 font-display text-base uppercase tracking-wider hover:bg-foreground hover:text-background transition-colors"
-              >
-                Book Service
-              </a>
-            </div>
-
-            {/* Stats row */}
-            <div className="mt-12 grid grid-cols-3 gap-4 max-w-xl border-t border-border pt-6">
-              {[
-                { value: "10+", label: "Years in BC" },
-                { value: "12K+", label: "Tires Fitted" },
-                { value: "4.9", label: "Avg Rating" },
-              ].map((s) => (
-                <div key={s.label}>
-                  <div className="font-display text-3xl lg:text-4xl text-foreground num-badge">
-                    {s.value}
-                  </div>
-                  <div className="mt-1 font-mono text-[10px] uppercase tracking-widest text-muted-foreground">
-                    {s.label}
-                  </div>
-                </div>
+        {/* Search widget */}
+        <div className="relative mt-10 lg:mt-14">
+          {/* Tabs */}
+          <div className="flex flex-wrap gap-1">
+            {TABS.map((t) => {
+              const active = t.id === activeTab
+              return (
+                <button
+                  key={t.id}
+                  type="button"
+                  onClick={() => setActiveTab(t.id)}
+                  className={`relative px-5 py-3 lg:px-7 lg:py-4 font-mono text-[10px] lg:text-xs uppercase tracking-[0.2em] transition-colors ${
+                    active
+                      ? "bg-background text-foreground border-t-2 border-primary"
+                      : "bg-background/40 text-foreground/60 hover:bg-background/70 hover:text-foreground"
+                  }`}
+                >
+                  {t.label}
+                </button>
+              )
+            })}
+          </div>
+          {/* Form panel */}
+          <div className="bg-background/95 backdrop-blur border-t border-primary p-5 lg:p-6">
+            <div className="grid gap-3 lg:gap-4" style={{ gridTemplateColumns: `repeat(${tab.fields.length + 1}, minmax(0, 1fr))` }}>
+              {tab.fields.map((f) => (
+                <select
+                  key={f}
+                  aria-label={f}
+                  className="h-12 bg-secondary border border-border text-foreground/80 font-mono text-xs uppercase tracking-wider px-3 focus:outline-none focus:border-primary"
+                >
+                  <option>{f}</option>
+                </select>
               ))}
-            </div>
-          </div>
-
-          {/* Right column - image + spec card */}
-          <div className="lg:col-span-5 relative">
-            <div className="relative aspect-[4/5] bg-card overflow-hidden">
-              <Image
-                src="/images/racing-hero.jpg"
-                alt="Performance racing tire on track"
-                fill
-                priority
-                className="object-cover"
-              />
-              {/* Corner brackets */}
-              <div className="absolute top-4 left-4 w-7 h-7 border-l-2 border-t-2 border-primary" />
-              <div className="absolute top-4 right-4 w-7 h-7 border-r-2 border-t-2 border-primary" />
-              <div className="absolute bottom-4 left-4 w-7 h-7 border-l-2 border-b-2 border-primary" />
-              <div className="absolute bottom-4 right-4 w-7 h-7 border-r-2 border-b-2 border-primary" />
-
-              {/* Floating spec card */}
-              <div className="absolute bottom-5 left-5 right-5 bg-background/95 backdrop-blur border-l-2 border-primary p-4">
-                <div className="flex items-center justify-between mb-1.5">
-                  <span className="font-mono text-[10px] uppercase tracking-widest text-primary">
-                    Live Spec
-                  </span>
-                  <span className="font-mono text-[10px] text-muted-foreground num-badge">
-                    255/35R19
-                  </span>
-                </div>
-                <div className="font-display text-lg text-foreground uppercase leading-tight">
-                  Apex RS Pro Compound
-                </div>
-                <div className="mt-2.5 flex items-center gap-4 text-xs">
-                  <div className="flex items-center gap-1.5">
-                    <Zap className="w-3.5 h-3.5 text-primary" />
-                    <span className="font-mono uppercase tracking-wider text-muted-foreground">
-                      Grip A+
-                    </span>
-                  </div>
-                  <div className="flex items-center gap-1.5">
-                    <ShieldCheck className="w-3.5 h-3.5 text-primary" />
-                    <span className="font-mono uppercase tracking-wider text-muted-foreground">
-                      Wear AA
-                    </span>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {/* Tagline below image */}
-            <div className="mt-3 flex items-center justify-between font-mono text-[10px] uppercase tracking-widest text-muted-foreground">
-              <span>F19 / Performance Division</span>
-              <span className="flex items-center gap-1.5">
-                <Wrench className="w-3 h-3" /> Certified Install
-              </span>
+              <button
+                type="button"
+                className="h-12 inline-flex items-center justify-center gap-2 bg-primary text-primary-foreground font-display uppercase text-base tracking-wider hover:bg-foreground hover:text-background transition-colors"
+              >
+                <Search className="w-4 h-4" /> Search
+                <ArrowRight className="w-4 h-4" />
+              </button>
             </div>
           </div>
         </div>
-
-        {/* Bottom tick row */}
-        <div className="mt-14 h-2 tick-row opacity-30" />
       </div>
     </section>
   )

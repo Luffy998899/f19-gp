@@ -1,8 +1,12 @@
 import { Navbar } from "@/components/navbar"
 import { HeroSection } from "@/components/hero-section"
+import { BrandLogos } from "@/components/brand-logos"
+import { ProductsCarousel } from "@/components/products-carousel"
+import { CategoriesGrid } from "@/components/categories-grid"
 import { MarqueeStrip } from "@/components/marquee-strip"
 import { ServicesSection } from "@/components/services-section"
 import { ProductsSection } from "@/components/products-section"
+import { TestimonialsSection } from "@/components/testimonials-section"
 import { AboutSection } from "@/components/about-section"
 import { GallerySection } from "@/components/gallery-section"
 import { FAQSection } from "@/components/faq-section"
@@ -26,8 +30,12 @@ export default async function Home() {
       <Navbar content={content} />
       <HeroSection content={content} />
       <MarqueeStrip />
+      <ProductsCarousel products={products} />
+      <CategoriesGrid />
       <ServicesSection />
       <ProductsSection products={products} />
+      <TestimonialsSection />
+      <BrandLogos />
       <AboutSection content={content} />
       <GallerySection images={gallery} />
       <FAQSection faqs={faqs} />
