@@ -1,148 +1,156 @@
 "use client"
 
 import { useActionState } from "react"
+import { ArrowUpRight, Phone, Mail, MapPin, Clock, MessageCircle } from "lucide-react"
 import { submitInquiry, type ContactFormState } from "@/app/actions/contact"
 
-type Props = {
+interface ContactSectionProps {
   content: Record<string, string>
 }
 
 const initialState: ContactFormState = { status: "idle", message: "" }
 
-export function ContactSection({ content }: Props) {
+export function ContactSection({ content }: ContactSectionProps) {
   const [state, formAction, isPending] = useActionState(submitInquiry, initialState)
 
   const phone = content.contact_phone || "778-999-8473"
   const email = content.contact_email || "formula19tires@gmail.com"
   const addressLine1 = content.contact_address_line1 || "Unit 1, 715 Evans CT"
   const addressLine2 = content.contact_address_line2 || "Kelowna, BC V1X 6G4"
-  const hours = content.business_hours || "Mon–Sat · 9.00 – 18.00"
+  const hours = content.business_hours || "Mon–Sat · 9AM – 6PM"
   const whatsapp = content.whatsapp_number || "17789998473"
 
   return (
-    <section id="enquiries" className="py-24 md:py-32 border-b border-border">
-      <div className="mx-auto max-w-[1600px] px-6 md:px-10">
-        <div className="grid grid-cols-12 gap-y-12 md:gap-x-10">
-          {/* Left: title + details */}
-          <div className="col-span-12 lg:col-span-5 flex flex-col justify-between gap-12">
-            <div>
-              <div className="flex items-center gap-2 text-xs font-mono uppercase tracking-widest text-muted-foreground mb-6">
-                <span className="inline-block h-px w-8 bg-foreground" />
-                Enquiries
-              </div>
-              <h2 className="font-serif text-5xl md:text-7xl tracking-tight leading-[0.95]">
-                Write to the
-                <br />
-                <span className="italic text-accent">workshop.</span>
-              </h2>
-              <p className="mt-6 text-base text-muted-foreground max-w-md leading-relaxed">
-                For a fitting appointment, custom order, or trade enquiry. We reply within one business day.
-              </p>
+    <section id="contact" className="relative bg-background py-24 lg:py-32 border-b border-border">
+      <div className="mx-auto max-w-[1400px] px-6">
+        {/* Header */}
+        <div className="mb-16">
+          <div className="flex items-center gap-3 mb-4">
+            <span className="font-mono text-xs uppercase tracking-[0.2em] text-primary">
+              / Contact
+            </span>
+            <span className="w-12 h-px bg-primary" />
+          </div>
+          <h2 className="font-display text-foreground uppercase text-[clamp(2.5rem,7vw,6rem)] leading-[0.9]">
+            Get in
+            <br />
+            <span className="text-primary">touch.</span>
+          </h2>
+        </div>
+
+        <div className="grid lg:grid-cols-12 gap-12">
+          {/* Left - Contact details */}
+          <div className="lg:col-span-5 space-y-8">
+            {/* Info cards */}
+            <div className="space-y-px bg-border">
+              {[
+                { icon: Phone, label: "Phone", value: phone, href: `tel:${phone.replace(/\D/g, "")}` },
+                { icon: Mail, label: "Email", value: email, href: `mailto:${email}` },
+                { icon: MapPin, label: "Location", value: `${addressLine1}, ${addressLine2}`, href: "#" },
+                { icon: Clock, label: "Hours", value: hours, href: "#" },
+              ].map((item) => {
+                const Icon = item.icon
+                return (
+                  <a
+                    key={item.label}
+                    href={item.href}
+                    className="group flex items-start gap-4 bg-background p-5 hover:bg-card transition-colors border border-border"
+                  >
+                    <div className="w-12 h-12 flex-shrink-0 flex items-center justify-center bg-primary text-primary-foreground">
+                      <Icon className="w-5 h-5" />
+                    </div>
+                    <div className="flex-1">
+                      <div className="font-mono text-[10px] uppercase tracking-widest text-muted-foreground mb-1">
+                        {item.label}
+                      </div>
+                      <div className="font-display text-lg uppercase tracking-tight text-foreground group-hover:text-primary transition-colors break-words">
+                        {item.value}
+                      </div>
+                    </div>
+                    <ArrowUpRight className="w-4 h-4 text-muted-foreground group-hover:text-primary mt-1 flex-shrink-0" />
+                  </a>
+                )
+              })}
             </div>
 
-            <dl className="grid grid-cols-1 sm:grid-cols-2 gap-y-8 gap-x-6 border-t border-border pt-8">
-              <div>
-                <dt className="text-[10px] font-mono uppercase tracking-widest text-muted-foreground mb-2">
-                  Telephone
-                </dt>
-                <dd>
-                  <a
-                    href={`tel:+${phone.replace(/\D/g, "")}`}
-                    className="font-serif text-xl hover:text-accent transition-colors"
-                  >
-                    {phone}
-                  </a>
-                </dd>
-              </div>
-              <div>
-                <dt className="text-[10px] font-mono uppercase tracking-widest text-muted-foreground mb-2">
-                  Correspondence
-                </dt>
-                <dd>
-                  <a
-                    href={`mailto:${email}`}
-                    className="font-serif text-xl hover:text-accent transition-colors break-all"
-                  >
-                    {email}
-                  </a>
-                </dd>
-              </div>
-              <div>
-                <dt className="text-[10px] font-mono uppercase tracking-widest text-muted-foreground mb-2">
-                  Atelier
-                </dt>
-                <dd className="font-serif text-xl leading-tight">
-                  {addressLine1}
-                  <br />
-                  {addressLine2}
-                </dd>
-              </div>
-              <div>
-                <dt className="text-[10px] font-mono uppercase tracking-widest text-muted-foreground mb-2">
-                  Hours
-                </dt>
-                <dd className="font-serif text-xl leading-tight">{hours}</dd>
-              </div>
-            </dl>
-
+            {/* WhatsApp card */}
             <a
               href={`https://wa.me/${whatsapp}`}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center justify-between border-t border-b border-foreground py-4 text-sm font-mono uppercase tracking-widest hover:text-accent hover:border-accent transition-colors"
+              className="group flex items-center justify-between bg-primary text-primary-foreground p-5 hover:bg-foreground hover:text-background transition-colors"
             >
-              <span>Or message on WhatsApp</span>
-              <span aria-hidden>↗</span>
+              <div className="flex items-center gap-4">
+                <MessageCircle className="w-6 h-6" />
+                <div>
+                  <div className="font-mono text-[10px] uppercase tracking-widest opacity-70">
+                    Fastest reply
+                  </div>
+                  <div className="font-display text-lg uppercase tracking-tight">
+                    Message on WhatsApp
+                  </div>
+                </div>
+              </div>
+              <ArrowUpRight className="w-5 h-5 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
             </a>
           </div>
 
-          {/* Right: form */}
-          <div className="col-span-12 lg:col-span-7">
-            <form action={formAction} className="space-y-8">
-              {state.status === "success" && (
-                <p className="border border-foreground bg-secondary p-4 text-sm font-mono uppercase tracking-widest">
-                  ✓ {state.message}
-                </p>
-              )}
-              {state.status === "error" && (
-                <p className="border border-accent text-accent p-4 text-sm font-mono uppercase tracking-widest">
-                  ✕ {state.message}
-                </p>
-              )}
-
-              <Field name="name" label="Name" required placeholder="Your full name" />
-              <Field name="email" type="email" label="Email" required placeholder="you@example.com" />
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                <Field name="phone" type="tel" label="Telephone" placeholder="778 555 1234" />
-                <Field name="subject" label="Subject" placeholder="Wheel & tyre quote" />
+          {/* Right - Form */}
+          <div className="lg:col-span-7">
+            <form action={formAction} className="bg-card p-8 lg:p-10 border-2 border-foreground space-y-6">
+              <div className="flex items-center justify-between pb-4 border-b border-border">
+                <h3 className="font-display text-2xl uppercase tracking-tight text-foreground">
+                  Send a message
+                </h3>
+                <span className="font-mono text-[10px] uppercase tracking-widest text-muted-foreground">
+                  Form / 001
+                </span>
               </div>
 
-              <div className="border-b border-border focus-within:border-foreground transition-colors pb-2">
+              {state.status === "success" && (
+                <div className="bg-primary text-primary-foreground p-4 font-mono text-xs uppercase tracking-widest">
+                  ✓ {state.message}
+                </div>
+              )}
+              {state.status === "error" && (
+                <div className="border border-destructive text-destructive p-4 font-mono text-xs uppercase tracking-widest">
+                  ✕ {state.message}
+                </div>
+              )}
+
+              <div className="grid sm:grid-cols-2 gap-6">
+                <Field name="name" label="Full Name" required placeholder="Jane Driver" />
+                <Field name="email" type="email" label="Email" required placeholder="you@example.com" />
+              </div>
+              <div className="grid sm:grid-cols-2 gap-6">
+                <Field name="phone" type="tel" label="Phone" placeholder="778 555 1234" />
+                <Field name="subject" label="Subject" placeholder="Wheel & tire quote" />
+              </div>
+
+              <div>
                 <label
                   htmlFor="message"
-                  className="block text-[10px] font-mono uppercase tracking-widest text-muted-foreground mb-2"
+                  className="block font-mono text-[10px] uppercase tracking-widest text-muted-foreground mb-2"
                 >
-                  Message <span className="text-accent">*</span>
+                  Message <span className="text-primary">*</span>
                 </label>
                 <textarea
                   id="message"
                   name="message"
                   required
-                  rows={4}
-                  className="w-full bg-transparent font-serif text-xl placeholder:text-muted-foreground/50 focus:outline-none resize-none"
-                  placeholder="Tell us what you&rsquo;re after…"
+                  rows={5}
+                  className="w-full bg-background border border-border focus:border-primary focus:outline-none p-3 text-foreground text-sm resize-none"
+                  placeholder="Tell us what you're after — size, vehicle, timeline..."
                 />
               </div>
 
               <button
                 type="submit"
                 disabled={isPending}
-                className="group inline-flex items-center justify-between w-full md:w-auto bg-foreground text-background px-8 py-5 font-mono text-xs uppercase tracking-widest hover:bg-accent transition-colors disabled:opacity-60 gap-12"
+                className="group w-full flex items-center justify-between bg-primary text-primary-foreground px-7 py-4 font-display text-lg uppercase tracking-wider hover:bg-foreground hover:text-background transition-colors disabled:opacity-60"
               >
-                <span>{isPending ? "Sending…" : "Send enquiry"}</span>
-                <span aria-hidden className="transition-transform group-hover:translate-x-1">
-                  →
-                </span>
+                <span>{isPending ? "Sending..." : "Send Message"}</span>
+                <ArrowUpRight className="w-5 h-5 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
               </button>
             </form>
           </div>
@@ -166,12 +174,12 @@ function Field({
   placeholder?: string
 }) {
   return (
-    <div className="border-b border-border focus-within:border-foreground transition-colors pb-2">
+    <div>
       <label
         htmlFor={name}
-        className="block text-[10px] font-mono uppercase tracking-widest text-muted-foreground mb-2"
+        className="block font-mono text-[10px] uppercase tracking-widest text-muted-foreground mb-2"
       >
-        {label} {required && <span className="text-accent">*</span>}
+        {label} {required && <span className="text-primary">*</span>}
       </label>
       <input
         id={name}
@@ -179,7 +187,7 @@ function Field({
         type={type}
         required={required}
         placeholder={placeholder}
-        className="w-full bg-transparent font-serif text-xl placeholder:text-muted-foreground/50 focus:outline-none"
+        className="w-full bg-background border border-border focus:border-primary focus:outline-none p-3 text-foreground text-sm"
       />
     </div>
   )

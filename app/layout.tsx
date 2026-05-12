@@ -1,5 +1,5 @@
 import type { Metadata } from "next"
-import { Inter, Fraunces, JetBrains_Mono } from "next/font/google"
+import { Inter, Anton, JetBrains_Mono } from "next/font/google"
 import { Analytics } from "@vercel/analytics/next"
 import "./globals.css"
 
@@ -9,11 +9,11 @@ const inter = Inter({
   display: "swap",
 })
 
-const fraunces = Fraunces({
+const anton = Anton({
   subsets: ["latin"],
-  variable: "--font-fraunces",
+  weight: "400",
+  variable: "--font-anton",
   display: "swap",
-  axes: ["opsz", "SOFT"],
 })
 
 const jetbrains = JetBrains_Mono({
@@ -23,16 +23,20 @@ const jetbrains = JetBrains_Mono({
 })
 
 export const metadata: Metadata = {
-  title: "Formula 19 — Tyres & Wheels of Distinction. Kelowna, BC.",
+  title: "FORMULA 19 — Performance Tires & Wheels | Kelowna, BC",
   description:
-    "An independent atelier for premium tyres, alloy wheels, and precision installation. Serving Kelowna and the Okanagan since 2014.",
-  keywords: ["tyres", "wheels", "alloy wheels", "performance", "Formula 19", "Kelowna", "BC", "tires"],
+    "Kelowna's premier destination for performance tires, alloy wheels, and certified installation. Built for the road, engineered for the track.",
+  keywords: ["tires", "wheels", "alloy wheels", "performance", "racing", "Formula 19", "Kelowna", "BC"],
   authors: [{ name: "Formula 19" }],
   openGraph: {
-    title: "Formula 19 — Tyres & Wheels of Distinction",
-    description: "Premium tyres and wheels for the Okanagan.",
+    title: "FORMULA 19 — Performance Tires & Wheels",
+    description: "Built for the road. Engineered for the track.",
     type: "website",
   },
+}
+
+export const viewport = {
+  themeColor: "#0a0a0a",
 }
 
 export default function RootLayout({
@@ -43,7 +47,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${inter.variable} ${fraunces.variable} ${jetbrains.variable} bg-background`}
+      className={`${inter.variable} ${anton.variable} ${jetbrains.variable} bg-background`}
     >
       <body className="font-sans antialiased bg-background text-foreground overflow-x-hidden">
         {children}

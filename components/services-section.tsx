@@ -1,78 +1,102 @@
+import { Disc3, Gauge, Wrench, Snowflake, Cog, ShieldCheck } from "lucide-react"
+
 const services = [
   {
-    n: "01",
-    title: "Tyre & Wheel Fitting",
-    text: "Hand-balanced, hub-centred installation with calibrated torque. Every set is road-tested before handover.",
+    num: "01",
+    icon: Disc3,
+    title: "Tire Sales & Install",
+    description:
+      "Full inventory of performance, all-season, winter, and off-road tires from premium brands. Same-day installation available.",
   },
   {
-    n: "02",
-    title: "Four-Wheel Alignment",
-    text: "Hunter precision alignment with printed before/after report. We restore factory geometry on every visit.",
+    num: "02",
+    icon: Gauge,
+    title: "Wheel Alignment",
+    description:
+      "Precision 4-wheel alignment using state-of-the-art Hunter equipment. Extends tire life and improves handling.",
   },
   {
-    n: "03",
-    title: "Seasonal Changeover",
-    text: "Indoor climate-controlled tyre storage with photographic condition log between seasons.",
+    num: "03",
+    icon: Cog,
+    title: "Balancing & Rotation",
+    description:
+      "Computer-balanced wheels with proper torque specs. Free rotation with every new set of tires we install.",
   },
   {
-    n: "04",
-    title: "Wheel Refinishing",
-    text: "Curb-rash repair, refinishing and powder coating handled by appointment with our in-house specialist.",
+    num: "04",
+    icon: Snowflake,
+    title: "Seasonal Swaps",
+    description:
+      "Winter to summer changeovers with secure tire storage. Skip the garage clutter and the wait.",
   },
   {
-    n: "05",
-    title: "TPMS & Sensors",
-    text: "Programming, replacement and rebuild of OEM tyre-pressure monitoring systems for all makes.",
+    num: "05",
+    icon: Wrench,
+    title: "Custom Wheel Fitting",
+    description:
+      "Aftermarket wheel sales and fitting with hub-centric rings. We verify offsets and clearance before install.",
   },
   {
-    n: "06",
-    title: "Performance Consultation",
-    text: "Sizing, load and speed-rating advice for track, off-road and lifted setups. Bring your spec sheet.",
+    num: "06",
+    icon: ShieldCheck,
+    title: "TPMS Service",
+    description:
+      "Tire pressure sensor diagnostics, programming, and replacement. We get your warning lights off — properly.",
   },
 ]
 
 export function ServicesSection() {
   return (
-    <section id="services" className="py-24 md:py-32 border-b border-border">
-      <div className="mx-auto max-w-[1600px] px-6 md:px-10">
-        <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-16 md:mb-24">
-          <div className="max-w-2xl">
-            <div className="flex items-center gap-2 text-xs font-mono uppercase tracking-widest text-muted-foreground mb-6">
-              <span className="inline-block h-px w-8 bg-foreground" />
-              The Workshop
+    <section id="services" className="relative bg-background py-24 lg:py-32 border-b border-border">
+      <div className="mx-auto max-w-[1400px] px-6">
+        {/* Section header */}
+        <div className="flex items-end justify-between mb-16 flex-wrap gap-6">
+          <div>
+            <div className="flex items-center gap-3 mb-4">
+              <span className="font-mono text-xs uppercase tracking-[0.2em] text-primary">
+                / Services
+              </span>
+              <span className="w-12 h-px bg-primary" />
             </div>
-            <h2 className="font-serif text-5xl md:text-7xl tracking-tight leading-[0.95]">
-              Six disciplines.
+            <h2 className="font-display text-foreground uppercase text-[clamp(2.5rem,7vw,6rem)] leading-[0.9]">
+              Full pit-lane
               <br />
-              <span className="italic text-accent">One standard.</span>
+              <span className="text-primary">service.</span>
             </h2>
           </div>
-          <p className="text-base text-muted-foreground max-w-sm">
-            Every service performed in-house by certified technicians, with a written record kept on file for the
-            life of the vehicle.
+          <p className="max-w-md text-muted-foreground text-base leading-relaxed">
+            Six core services, one shop. Every job is performed by certified
+            technicians using calibrated equipment — no shortcuts, no surprises.
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 border-t border-l border-border">
-          {services.map((s) => (
-            <article
-              key={s.n}
-              className="group relative border-b border-r border-border p-8 md:p-10 flex flex-col gap-4 transition-colors hover:bg-foreground hover:text-background"
-            >
-              <div className="flex items-center justify-between text-xs font-mono uppercase tracking-widest text-muted-foreground group-hover:text-background/60">
-                <span>N° {s.n}</span>
-                <span aria-hidden className="opacity-0 group-hover:opacity-100 transition-opacity">
-                  ↗
-                </span>
-              </div>
-              <h3 className="font-serif text-3xl md:text-4xl tracking-tight leading-tight mt-12 md:mt-20">
-                {s.title}
-              </h3>
-              <p className="text-sm leading-relaxed text-muted-foreground group-hover:text-background/80 mt-2">
-                {s.text}
-              </p>
-            </article>
-          ))}
+        {/* Grid */}
+        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-px bg-border">
+          {services.map((s) => {
+            const Icon = s.icon
+            return (
+              <article
+                key={s.num}
+                className="group relative bg-background p-8 lg:p-10 hover:bg-card transition-colors"
+              >
+                <div className="flex items-start justify-between mb-8">
+                  <span className="font-mono text-xs uppercase tracking-widest text-muted-foreground">
+                    {s.num} / 06
+                  </span>
+                  <div className="w-12 h-12 flex items-center justify-center border border-border group-hover:bg-primary group-hover:border-primary transition-colors">
+                    <Icon className="w-5 h-5 text-foreground group-hover:text-primary-foreground transition-colors" />
+                  </div>
+                </div>
+                <h3 className="font-display text-3xl text-foreground uppercase mb-3 tracking-tight">
+                  {s.title}
+                </h3>
+                <p className="text-sm text-muted-foreground leading-relaxed">
+                  {s.description}
+                </p>
+                <div className="mt-6 h-px w-12 bg-primary" />
+              </article>
+            )
+          })}
         </div>
       </div>
     </section>

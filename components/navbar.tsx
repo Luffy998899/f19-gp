@@ -2,26 +2,27 @@
 
 import { useEffect, useState } from "react"
 import Link from "next/link"
-import { Menu, X } from "lucide-react"
+import { Menu, X, Phone } from "lucide-react"
 
-type Props = {
+interface NavbarProps {
   content: Record<string, string>
 }
 
-const links = [
-  { label: "Index", href: "#top", number: "01" },
-  { label: "Catalogue", href: "#catalogue", number: "02" },
-  { label: "Atelier", href: "#atelier", number: "03" },
-  { label: "Archive", href: "#archive", number: "04" },
-  { label: "Enquiries", href: "#enquiries", number: "05" },
+const nav = [
+  { label: "Tires", href: "#products", num: "01" },
+  { label: "Services", href: "#services", num: "02" },
+  { label: "Garage", href: "#about", num: "03" },
+  { label: "Gallery", href: "#gallery", num: "04" },
+  { label: "FAQ", href: "#faq", num: "05" },
+  { label: "Contact", href: "#contact", num: "06" },
 ]
 
-export function Navbar({ content }: Props) {
+export function Navbar({ content }: NavbarProps) {
   const [open, setOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 20)
+    const onScroll = () => setScrolled(window.scrollY > 40)
     onScroll()
     window.addEventListener("scroll", onScroll, { passive: true })
     return () => window.removeEventListener("scroll", onScroll)
@@ -29,106 +30,105 @@ export function Navbar({ content }: Props) {
 
   return (
     <>
+      {/* Top utility bar */}
+      <div className="hidden md:block bg-primary text-primary-foreground">
+        <div className="mx-auto max-w-[1400px] flex items-center justify-between px-6 py-2 text-xs font-mono uppercase tracking-widest">
+          <div className="flex items-center gap-6">
+            <span>Kelowna · BC</span>
+            <span className="opacity-60">|</span>
+            <span>{content.business_hours || "MON–SAT 9AM–6PM"}</span>
+          </div>
+          <a
+            href={`tel:${content.contact_phone || "778-999-8473"}`}
+            className="flex items-center gap-2 hover:opacity-70"
+          >
+            <Phone className="w-3 h-3" />
+            {content.contact_phone || "778-999-8473"}
+          </a>
+        </div>
+      </div>
+
       <header
-        id="top"
-        className={`fixed top-0 inset-x-0 z-40 transition-all duration-500 ${
-          scrolled ? "bg-background/85 backdrop-blur-md border-b border-border" : "bg-transparent"
+        className={`sticky top-0 z-50 transition-all border-b ${
+          scrolled
+            ? "bg-background/95 backdrop-blur border-border"
+            : "bg-background border-transparent"
         }`}
       >
-        <div className="mx-auto max-w-[1600px] px-6 md:px-10 h-16 md:h-20 flex items-center justify-between">
-          <Link href="#top" className="flex items-baseline gap-2 group">
-            <span className="font-serif text-2xl md:text-3xl tracking-tight">Formula</span>
-            <span className="font-mono text-xs md:text-sm tracking-widest text-accent">/19</span>
+        <div className="mx-auto max-w-[1400px] flex items-center justify-between px-6 h-20">
+          <Link href="#top" className="flex items-center gap-3 group">
+            <div className="relative w-11 h-11 bg-primary flex items-center justify-center">
+              <span className="font-display text-2xl text-primary-foreground leading-none">F19</span>
+              <span className="absolute -bottom-1 -right-1 w-2.5 h-2.5 bg-foreground" />
+            </div>
+            <div className="leading-none">
+              <div className="font-display text-2xl tracking-tight text-foreground">FORMULA 19</div>
+              <div className="text-[10px] font-mono uppercase tracking-[0.2em] text-muted-foreground mt-1">
+                Tires · Wheels · Service
+              </div>
+            </div>
           </Link>
 
-          <nav className="hidden md:flex items-center gap-10">
-            {links.slice(1).map((l) => (
+          <nav className="hidden lg:flex items-center gap-1">
+            {nav.map((item) => (
               <a
-                key={l.href}
-                href={l.href}
-                className="group flex items-baseline gap-1.5 text-sm font-medium hover:text-accent transition-colors"
+                key={item.label}
+                href={item.href}
+                className="group flex items-center gap-1.5 px-3 py-2 text-sm font-medium uppercase tracking-wider text-foreground hover:text-primary transition-colors"
               >
-                <span className="font-mono text-[10px] text-muted-foreground group-hover:text-accent">
-                  {l.number}
+                <span className="font-mono text-[10px] text-muted-foreground group-hover:text-primary">
+                  {item.num}
                 </span>
-                <span>{l.label}</span>
+                {item.label}
               </a>
             ))}
           </nav>
 
-          <div className="hidden md:flex items-center gap-4">
+          <div className="flex items-center gap-3">
             <a
-              href={`tel:${content.contact_phone || "778-999-8473"}`}
-              className="font-mono text-xs tracking-wider text-muted-foreground hover:text-foreground"
+              href="#contact"
+              className="hidden md:inline-flex items-center gap-2 bg-primary text-primary-foreground px-5 py-3 font-display text-base tracking-wider uppercase hover:bg-foreground hover:text-background transition-colors"
             >
-              {content.contact_phone || "778-999-8473"}
+              Book Service
             </a>
-            <a
-              href="#enquiries"
-              className="inline-flex items-center gap-2 bg-foreground text-background px-5 py-2.5 text-xs font-mono uppercase tracking-widest hover:bg-accent transition-colors"
+            <button
+              onClick={() => setOpen(!open)}
+              className="lg:hidden w-10 h-10 flex items-center justify-center text-foreground"
+              aria-label="Toggle menu"
             >
-              Book a fitting
-              <span aria-hidden>→</span>
-            </a>
+              {open ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+            </button>
           </div>
-
-          <button
-            type="button"
-            className="md:hidden inline-flex items-center justify-center w-10 h-10 -mr-2"
-            onClick={() => setOpen(true)}
-            aria-label="Open menu"
-          >
-            <Menu className="h-6 w-6" />
-          </button>
         </div>
+
+        {/* Checkered accent line */}
+        <div className="h-[3px] checkered" />
+
+        {/* Mobile menu */}
+        {open && (
+          <div className="lg:hidden border-t border-border bg-background">
+            <div className="px-6 py-6 space-y-1">
+              {nav.map((item) => (
+                <a
+                  key={item.label}
+                  href={item.href}
+                  onClick={() => setOpen(false)}
+                  className="flex items-center gap-3 py-3 text-foreground hover:text-primary border-b border-border"
+                >
+                  <span className="font-mono text-xs text-muted-foreground w-6">{item.num}</span>
+                  <span className="font-display text-2xl tracking-tight uppercase">{item.label}</span>
+                </a>
+              ))}
+              <a
+                href={`tel:${content.contact_phone || "778-999-8473"}`}
+                className="flex items-center justify-center gap-2 mt-6 bg-primary text-primary-foreground py-4 font-display text-lg uppercase tracking-wider"
+              >
+                <Phone className="w-4 h-4" /> {content.contact_phone || "778-999-8473"}
+              </a>
+            </div>
+          </div>
+        )}
       </header>
-
-      {/* Mobile menu */}
-      <div
-        className={`fixed inset-0 z-50 bg-foreground text-background transition-transform duration-500 md:hidden ${
-          open ? "translate-y-0" : "-translate-y-full"
-        }`}
-      >
-        <div className="flex items-center justify-between px-6 h-16">
-          <Link
-            href="#top"
-            onClick={() => setOpen(false)}
-            className="flex items-baseline gap-2"
-          >
-            <span className="font-serif text-2xl">Formula</span>
-            <span className="font-mono text-xs text-accent">/19</span>
-          </Link>
-          <button
-            type="button"
-            onClick={() => setOpen(false)}
-            className="inline-flex items-center justify-center w-10 h-10 -mr-2"
-            aria-label="Close menu"
-          >
-            <X className="h-6 w-6" />
-          </button>
-        </div>
-        <nav className="px-6 pt-10 flex flex-col gap-2">
-          {links.map((l) => (
-            <a
-              key={l.href}
-              href={l.href}
-              onClick={() => setOpen(false)}
-              className="flex items-baseline justify-between border-b border-background/20 py-5"
-            >
-              <span className="font-serif text-4xl">{l.label}</span>
-              <span className="font-mono text-xs text-background/50">{l.number}</span>
-            </a>
-          ))}
-        </nav>
-        <div className="px-6 mt-10 flex flex-col gap-2 font-mono text-xs tracking-wider text-background/70">
-          <a href={`tel:${content.contact_phone || "778-999-8473"}`}>
-            {content.contact_phone || "778-999-8473"}
-          </a>
-          <a href={`mailto:${content.contact_email || "formula19tires@gmail.com"}`}>
-            {content.contact_email || "formula19tires@gmail.com"}
-          </a>
-        </div>
-      </div>
     </>
   )
 }
