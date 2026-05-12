@@ -42,12 +42,13 @@ export function HeroSection({ content }: HeroSectionProps) {
               Spring Wheel & Tire Event
             </span>
           </div>
-          <h1 className="font-display uppercase text-foreground leading-[0.9] tracking-tight text-[clamp(2.75rem,7vw,5.75rem)]">
-            Wheels & Tires
-            <br />
-            Sale{" "}
-            <span className="inline-flex items-center bg-primary text-primary-foreground px-4 py-1 align-middle">
-              Up to 75% Off
+          <h1 className="font-display uppercase text-foreground leading-[1.05] tracking-wide text-[clamp(2.25rem,5.5vw,4.5rem)]">
+            <span className="block">Wheels &amp; Tires</span>
+            <span className="block mt-2">
+              Sale{" "}
+              <span className="inline-block bg-primary text-primary-foreground px-3 py-0.5 tracking-wider">
+                Up to 75% Off
+              </span>
             </span>
           </h1>
           <p className="mt-6 max-w-xl text-base lg:text-lg text-foreground/70 leading-relaxed">
