@@ -11,33 +11,33 @@
   --card-foreground: oklch(0.98 0.005 80);
   --popover: oklch(0.16 0.005 240);
   --popover-foreground: oklch(0.98 0.005 80);
-  --primary: oklch(0.62 0.23 25);              /* brand red */
-  --primary-foreground: oklch(0.98 0.005 80);
-  --secondary: oklch(0.2 0.005 240);           /* dark gray */
-  --secondary-foreground: oklch(0.98 0.005 80);
-  --muted: oklch(0.2 0.005 240);
-  --muted-foreground: oklch(0.65 0.005 240);
-  --accent: oklch(0.62 0.23 25);               /* brand red accent */
-  --accent-foreground: oklch(0.98 0.005 80);
-  --destructive: oklch(0.62 0.23 25);
-  --destructive-foreground: oklch(0.98 0.005 80);
-  --border: oklch(0.98 0.005 80 / 0.1);
-  --input: oklch(0.2 0.005 240);
-  --ring: oklch(0.62 0.23 25);
-  --chart-1: oklch(0.62 0.23 25);
-  --chart-2: oklch(0.98 0.005 80);
-  --chart-3: oklch(0.65 0.005 240);
-  --chart-4: oklch(0.4 0.005 240);
-  --chart-5: oklch(0.2 0.005 240);
+  --primary: #E11D2A;                          /* Formula 19 brand red */
+  --primary-foreground: #ffffff;
+  --secondary: #1a1a1a;                        /* dark gray */
+  --secondary-foreground: #ffffff;
+  --muted: #1a1a1a;
+  --muted-foreground: #8a8a8a;
+  --accent: #E11D2A;                           /* brand red accent */
+  --accent-foreground: #ffffff;
+  --destructive: #E11D2A;
+  --destructive-foreground: #ffffff;
+  --border: rgba(255, 255, 255, 0.1);
+  --input: #1a1a1a;
+  --ring: #E11D2A;
+  --chart-1: #E11D2A;
+  --chart-2: #ffffff;
+  --chart-3: #8a8a8a;
+  --chart-4: #4a4a4a;
+  --chart-5: #1a1a1a;
   --radius: 0rem;
-  --sidebar: oklch(0.09 0.005 240);
-  --sidebar-foreground: oklch(0.98 0.005 80);
-  --sidebar-primary: oklch(0.62 0.23 25);
-  --sidebar-primary-foreground: oklch(0.98 0.005 80);
-  --sidebar-accent: oklch(0.16 0.005 240);
-  --sidebar-accent-foreground: oklch(0.98 0.005 80);
-  --sidebar-border: oklch(0.98 0.005 80 / 0.1);
-  --sidebar-ring: oklch(0.62 0.23 25);
+  --sidebar: #0a0a0a;
+  --sidebar-foreground: #ffffff;
+  --sidebar-primary: #E11D2A;
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: #1a1a1a;
+  --sidebar-accent-foreground: #ffffff;
+  --sidebar-border: rgba(255, 255, 255, 0.1);
+  --sidebar-ring: #E11D2A;
 }
 
 @theme inline {
@@ -166,7 +166,7 @@
 .text-glitch {
   text-shadow:
     2px 0 0 var(--primary),
-    -2px 0 0 oklch(0.6 0.22 28);
+    -2px 0 0 #ffffff;
 }
 
 /* Card hover lift */

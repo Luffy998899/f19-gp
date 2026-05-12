@@ -69,8 +69,8 @@ export default async function AdminDashboard() {
       value: stats.faqs,
       icon: HelpCircle,
       href: "/admin/faqs",
-      color: "text-amber-400",
-      bg: "bg-amber-600/10",
+      color: "text-zinc-300",
+      bg: "bg-zinc-600/10",
     },
   ]
 

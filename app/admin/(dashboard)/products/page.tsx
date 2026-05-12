@@ -95,7 +95,7 @@ export default async function AdminProductsPage() {
                     </td>
                     <td className="px-4 py-3">
                       <div className="flex items-center gap-1 text-zinc-300">
-                        <Star className="h-3.5 w-3.5 fill-yellow-500 text-yellow-500" />
+                        <Star className="h-3.5 w-3.5 fill-red-500 text-red-500" />
                         {p.rating}
                       </div>
                     </td>
