@@ -1,31 +1,23 @@
 import type { Metadata } from 'next'
-import { Geist, Geist_Mono } from 'next/font/google'
+import { Space_Grotesk } from 'next/font/google'
 import { Analytics } from '@vercel/analytics/next'
 import './globals.css'
 
-const _geist = Geist({ subsets: ["latin"] });
-const _geistMono = Geist_Mono({ subsets: ["latin"] });
+const spaceGrotesk = Space_Grotesk({ 
+  subsets: ["latin"],
+  variable: '--font-space-grotesk',
+  display: 'swap',
+})
 
 export const metadata: Metadata = {
-  title: 'v0 App',
-  description: 'Created with v0',
-  generator: 'v0.app',
-  icons: {
-    icon: [
-      {
-        url: '/icon-light-32x32.png',
-        media: '(prefers-color-scheme: light)',
-      },
-      {
-        url: '/icon-dark-32x32.png',
-        media: '(prefers-color-scheme: dark)',
-      },
-      {
-        url: '/icon.svg',
-        type: 'image/svg+xml',
-      },
-    ],
-    apple: '/apple-icon.png',
+  title: 'Formula 19 Tyres | Precision. Performance. Power.',
+  description: 'Premium performance tyres and alloy wheels. Experience precision engineering, lightweight performance, and track-tested durability. All about tyres.',
+  keywords: ['tyres', 'wheels', 'alloy wheels', 'performance tyres', 'premium wheels', 'Formula 19'],
+  authors: [{ name: 'Formula 19 Tyres' }],
+  openGraph: {
+    title: 'Formula 19 Tyres | Precision. Performance. Power.',
+    description: 'Premium performance tyres and alloy wheels for the ultimate driving experience.',
+    type: 'website',
   },
 }
 
@@ -35,8 +27,8 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="en">
-      <body className="font-sans antialiased">
+    <html lang="en" className={`${spaceGrotesk.variable} bg-background`}>
+      <body className="font-sans antialiased bg-background text-foreground overflow-x-hidden">
         {children}
         {process.env.NODE_ENV === 'production' && <Analytics />}
       </body>
