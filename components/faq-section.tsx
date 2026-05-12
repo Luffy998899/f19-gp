@@ -108,8 +108,8 @@ export function FAQSection() {
           <span className="inline-block text-red-500 text-sm font-medium tracking-widest uppercase mb-4">
             FAQ
           </span>
-          <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-4">
-            Common Questions
+          <h2 className="font-heading text-5xl md:text-6xl lg:text-7xl text-white mb-4 tracking-wide">
+            COMMON QUESTIONS
           </h2>
           <p className="text-muted-foreground max-w-2xl mx-auto">
             Find answers to frequently asked questions about our products and services.

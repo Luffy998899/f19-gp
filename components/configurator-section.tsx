@@ -23,7 +23,7 @@ const accentColors = [
 ]
 
 const carImages = [
-  "https://images.unsplash.com/photo-1503376780353-7e6692767b70?w=1200&h=600&fit=crop",
+  "https://images.unsplash.com/photo-1611085583191-a3b181a88401?w=1200&h=600&fit=crop",
 ]
 
 export function ConfiguratorSection() {
@@ -56,8 +56,8 @@ export function ConfiguratorSection() {
           <span className="inline-block text-red-500 text-sm font-medium tracking-widest uppercase mb-4">
             Interactive Experience
           </span>
-          <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-4">
-            Build Your Dream Ride
+          <h2 className="font-heading text-5xl md:text-6xl lg:text-7xl text-white mb-4 tracking-wide">
+            BUILD YOUR DREAM RIDE
           </h2>
           <p className="text-muted-foreground max-w-2xl mx-auto">
             Customize your perfect wheel setup with our interactive configurator.

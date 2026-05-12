@@ -61,9 +61,9 @@ export function Footer() {
           {/* Brand Column */}
           <div className="lg:col-span-2">
             <Link href="#home" className="inline-block mb-6">
-              <span className="text-3xl font-bold tracking-tight">
-                <span className="text-white italic">Formula</span>
-                <span className="text-red-500 font-black">19</span>
+              <span className="font-heading text-4xl tracking-wide">
+                <span className="text-white">FORMULA</span>
+                <span className="text-red-500">19</span>
               </span>
               <span className="block text-xs text-muted-foreground tracking-[0.3em] uppercase mt-1">
                 Tyres
@@ -76,22 +76,22 @@ export function Footer() {
             {/* Contact Info */}
             <div className="space-y-3">
               <a
-                href="tel:+1234567890"
+                href="tel:+17789998473"
                 className="flex items-center gap-3 text-muted-foreground hover:text-white transition-colors"
               >
                 <Phone className="w-4 h-4 text-red-500" />
-                +1 234 567 890
+                778-999-8473
               </a>
               <a
-                href="mailto:info@formula19.com"
+                href="mailto:formula19tires@gmail.com"
                 className="flex items-center gap-3 text-muted-foreground hover:text-white transition-colors"
               >
                 <Mail className="w-4 h-4 text-red-500" />
-                info@formula19.com
+                formula19tires@gmail.com
               </a>
-              <div className="flex items-center gap-3 text-muted-foreground">
-                <MapPin className="w-4 h-4 text-red-500" />
-                123 Performance Drive, Auto City
+              <div className="flex items-start gap-3 text-muted-foreground">
+                <MapPin className="w-4 h-4 text-red-500 mt-0.5 flex-shrink-0" />
+                <span>Unit 1, 715 Evans CT<br />Kelowna, BC V1X 6G4</span>
               </div>
             </div>
           </div>

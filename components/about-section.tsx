@@ -59,8 +59,8 @@ export function AboutSection() {
           <span className="inline-block text-red-500 text-sm font-medium tracking-widest uppercase mb-4">
             Why Choose Us
           </span>
-          <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-4">
-            Engineering Excellence
+          <h2 className="font-heading text-5xl md:text-6xl lg:text-7xl text-white mb-4 tracking-wide">
+            ENGINEERING EXCELLENCE
           </h2>
           <p className="text-muted-foreground max-w-2xl mx-auto">
             Over 15 years of expertise in delivering premium automotive solutions
@@ -79,8 +79,8 @@ export function AboutSection() {
             <motion.div style={{ y: imageY }} className="relative">
               <div className="relative aspect-[4/5] rounded-2xl overflow-hidden">
                 <Image
-                  src="https://images.unsplash.com/photo-1568605117036-5fe5e7bab0b7?w=800&h=1000&fit=crop"
-                  alt="Premium Tyre"
+                  src="https://images.unsplash.com/photo-1611085583191-a3b181a88401?w=800&h=1000&fit=crop"
+                  alt="Premium Alloy Wheel"
                   fill
                   className="object-cover"
                 />

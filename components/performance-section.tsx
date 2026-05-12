@@ -203,8 +203,8 @@ export function PerformanceSection() {
           <span className="inline-block text-red-500 text-sm font-medium tracking-widest uppercase mb-4">
             Performance Metrics
           </span>
-          <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-4">
-            Built for Speed
+          <h2 className="font-heading text-5xl md:text-6xl lg:text-7xl text-white mb-4 tracking-wide">
+            BUILT FOR SPEED
           </h2>
           <p className="text-muted-foreground max-w-2xl mx-auto">
             Our tyres undergo rigorous testing to deliver exceptional performance

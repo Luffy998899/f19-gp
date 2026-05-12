@@ -21,7 +21,7 @@ const products = [
     rating: 4.9,
     reviews: 234,
     specs: { size: '19"', width: "255mm", profile: "35" },
-    image: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=600&h=600&fit=crop",
+    image: "https://images.unsplash.com/photo-1611085583191-a3b181a88401?w=600&h=600&fit=crop",
   },
   {
     id: 2,
@@ -31,7 +31,7 @@ const products = [
     rating: 5.0,
     reviews: 189,
     specs: { size: '20"', width: "275mm", profile: "30" },
-    image: "https://images.unsplash.com/photo-1611085583191-a3b181a88401?w=600&h=600&fit=crop",
+    image: "https://images.unsplash.com/photo-1626814026160-2237a95fc5a0?w=600&h=600&fit=crop",
   },
   {
     id: 3,
@@ -41,7 +41,7 @@ const products = [
     rating: 4.8,
     reviews: 156,
     specs: { size: '21"', width: "285mm", profile: "35" },
-    image: "https://images.unsplash.com/photo-1605559424843-9e4c228bf1c2?w=600&h=600&fit=crop",
+    image: "https://images.unsplash.com/photo-1558618047-3c8c76ca7d13?w=600&h=600&fit=crop",
   },
   {
     id: 4,
@@ -51,7 +51,7 @@ const products = [
     rating: 4.9,
     reviews: 312,
     specs: { size: '19"', width: "265mm", profile: "40" },
-    image: "https://images.unsplash.com/photo-1489824904134-891ab64532f1?w=600&h=600&fit=crop",
+    image: "https://images.unsplash.com/photo-1503376780353-7e6692767b70?w=600&h=600&fit=crop",
   },
   {
     id: 5,
@@ -61,7 +61,7 @@ const products = [
     rating: 4.7,
     reviews: 278,
     specs: { size: '18"', width: "245mm", profile: "45" },
-    image: "https://images.unsplash.com/photo-1544636331-e26879cd4d9b?w=600&h=600&fit=crop",
+    image: "https://images.unsplash.com/photo-1600712242805-5f78671b24da?w=600&h=600&fit=crop",
   },
 ]
 
@@ -271,8 +271,8 @@ export function ProductsSection() {
           <span className="inline-block text-red-500 text-sm font-medium tracking-widest uppercase mb-4">
             Premium Collection
           </span>
-          <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-4">
-            Featured Products
+          <h2 className="font-heading text-5xl md:text-6xl lg:text-7xl text-white mb-4 tracking-wide">
+            FEATURED PRODUCTS
           </h2>
           <p className="text-muted-foreground max-w-2xl mx-auto">
             Discover our handpicked selection of premium tyres and alloy wheels,

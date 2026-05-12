@@ -8,50 +8,50 @@ import Image from "next/image"
 const galleryImages = [
   {
     id: 1,
-    src: "https://images.unsplash.com/photo-1600712242805-5f78671b24da?w=800&h=600&fit=crop",
+    src: "https://images.unsplash.com/photo-1611085583191-a3b181a88401?w=800&h=600&fit=crop",
     alt: "Premium Alloy Wheel",
     category: "Wheels",
   },
   {
     id: 2,
-    src: "https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?w=800&h=600&fit=crop",
-    alt: "Luxury Sports Car",
-    category: "Fitments",
+    src: "https://images.unsplash.com/photo-1600712242805-5f78671b24da?w=800&h=600&fit=crop",
+    alt: "Multi-Spoke Alloy Wheel",
+    category: "Wheels",
   },
   {
     id: 3,
-    src: "https://images.unsplash.com/photo-1625047509248-ec889cbff17f?w=800&h=600&fit=crop",
-    alt: "Tyre Closeup",
+    src: "https://images.unsplash.com/photo-1558618047-3c8c76ca7d13?w=800&h=600&fit=crop",
+    alt: "Performance Tyre Closeup",
     category: "Tyres",
   },
   {
     id: 4,
-    src: "https://images.unsplash.com/photo-1618843479313-40f8afb4b4d8?w=800&h=600&fit=crop",
-    alt: "Sports Car Wheel",
-    category: "Fitments",
+    src: "https://images.unsplash.com/photo-1626814026160-2237a95fc5a0?w=800&h=600&fit=crop",
+    alt: "Black Alloy Wheel",
+    category: "Wheels",
   },
   {
     id: 5,
-    src: "https://images.unsplash.com/photo-1583121274602-3e2820c69888?w=800&h=600&fit=crop",
-    alt: "Performance Tyre",
-    category: "Tyres",
+    src: "https://images.unsplash.com/photo-1503376780353-7e6692767b70?w=800&h=600&fit=crop",
+    alt: "Sports Car Wheel Fitment",
+    category: "Fitments",
   },
   {
     id: 6,
-    src: "https://images.unsplash.com/photo-1542362567-b07e54358753?w=800&h=600&fit=crop",
-    alt: "Chrome Wheel",
+    src: "https://images.unsplash.com/photo-1609521263047-f8f205293f24?w=800&h=600&fit=crop",
+    alt: "Chrome Racing Wheel",
     category: "Wheels",
   },
   {
     id: 7,
-    src: "https://images.unsplash.com/photo-1544636331-e26879cd4d9b?w=800&h=600&fit=crop",
-    alt: "Luxury Car Detail",
-    category: "Fitments",
+    src: "https://images.unsplash.com/photo-1486262715619-67b85e0b08d3?w=800&h=600&fit=crop",
+    alt: "Racing Slick Tyre",
+    category: "Tyres",
   },
   {
     id: 8,
-    src: "https://images.unsplash.com/photo-1580273916550-e323be2ae537?w=800&h=600&fit=crop",
-    alt: "Sports Car",
+    src: "https://images.unsplash.com/photo-1605559424843-9e4c228bf1c2?w=800&h=600&fit=crop",
+    alt: "Luxury Wheel Installation",
     category: "Fitments",
   },
 ]
@@ -170,8 +170,8 @@ export function GallerySection() {
           <span className="inline-block text-red-500 text-sm font-medium tracking-widest uppercase mb-4">
             Gallery
           </span>
-          <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-4">
-            Our Work
+          <h2 className="font-heading text-5xl md:text-6xl lg:text-7xl text-white mb-4 tracking-wide">
+            OUR WORK
           </h2>
           <p className="text-muted-foreground max-w-2xl mx-auto">
             Browse our collection of premium wheel installations and tyre fitments.

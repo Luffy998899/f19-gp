@@ -8,25 +8,25 @@ const contactInfo = [
   {
     icon: Phone,
     label: "Phone",
-    value: "+1 234 567 890",
-    href: "tel:+1234567890",
+    value: "778-999-8473",
+    href: "tel:+17789998473",
   },
   {
     icon: Mail,
     label: "Email",
-    value: "info@formula19.com",
-    href: "mailto:info@formula19.com",
+    value: "formula19tires@gmail.com",
+    href: "mailto:formula19tires@gmail.com",
   },
   {
     icon: MapPin,
     label: "Location",
-    value: "123 Performance Drive, Auto City",
-    href: "https://maps.google.com",
+    value: "Unit 1, 715 Evans CT, Kelowna, BC V1X 6G4",
+    href: "https://maps.google.com/maps?q=715+Evans+CT+Kelowna+BC+V1X+6G4",
   },
   {
     icon: Clock,
     label: "Hours",
-    value: "Mon-Sat: 9AM - 7PM",
+    value: "Mon-Sat: 9AM - 6PM",
     href: null,
   },
 ]
@@ -128,8 +128,8 @@ export function ContactSection() {
           <span className="inline-block text-red-500 text-sm font-medium tracking-widest uppercase mb-4">
             Contact Us
           </span>
-          <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-4">
-            Get In Touch
+          <h2 className="font-heading text-5xl md:text-6xl lg:text-7xl text-white mb-4 tracking-wide">
+            GET IN TOUCH
           </h2>
           <p className="text-muted-foreground max-w-2xl mx-auto">
             Ready to upgrade your ride? Contact us for personalized recommendations
@@ -185,7 +185,7 @@ export function ContactSection() {
 
             {/* WhatsApp CTA */}
             <motion.a
-              href="https://wa.me/1234567890"
+              href="https://wa.me/17789998473"
               target="_blank"
               rel="noopener noreferrer"
               initial={{ opacity: 0, y: 20 }}
@@ -205,14 +205,14 @@ export function ContactSection() {
               className="aspect-video rounded-xl overflow-hidden glass"
             >
               <iframe
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d387193.3059353029!2d-74.25986548248684!3d40.69714941932609!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89c24fa5d33f083b%3A0xc80b8f06e177fe62!2sNew%20York%2C%20NY%2C%20USA!5e0!3m2!1sen!2s!4v1635959481000!5m2!1sen!2s"
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2569.8!2d-119.4!3d49.88!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2s715+Evans+Ct%2C+Kelowna%2C+BC+V1X+6G4!5e0!3m2!1sen!2sca!4v1699999999999"
                 width="100%"
                 height="100%"
                 style={{ border: 0, filter: "invert(90%) hue-rotate(180deg)" }}
                 allowFullScreen
                 loading="lazy"
                 referrerPolicy="no-referrer-when-downgrade"
-                title="Location Map"
+                title="Formula 19 Tyres Location"
               />
             </motion.div>
           </motion.div>

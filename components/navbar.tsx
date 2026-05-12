@@ -48,9 +48,9 @@ export function Navbar() {
           <div className="flex items-center justify-between">
             {/* Logo */}
             <Link href="#home" className="flex items-center gap-2 group">
-              <span className="text-2xl font-bold tracking-tight">
-                <span className="text-white italic">Formula</span>
-                <span className="text-red-500 font-black">19</span>
+              <span className="font-heading text-3xl tracking-wide">
+                <span className="text-white">FORMULA</span>
+                <span className="text-red-500">19</span>
               </span>
               <span className="text-[10px] text-muted-foreground tracking-[0.2em] uppercase hidden sm:block">
                 Tyres
@@ -74,14 +74,14 @@ export function Navbar() {
             {/* CTA Buttons */}
             <div className="hidden lg:flex items-center gap-4">
               <a
-                href="tel:+1234567890"
+                href="tel:+17789998473"
                 className="flex items-center gap-2 text-sm text-muted-foreground hover:text-white transition-colors"
               >
                 <Phone className="w-4 h-4" />
-                <span className="hidden xl:inline">+1 234 567 890</span>
+                <span className="hidden xl:inline">778-999-8473</span>
               </a>
               <a
-                href="https://wa.me/1234567890"
+                href="https://wa.me/17789998473"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex items-center gap-2 px-4 py-2 bg-red-600 hover:bg-red-700 text-white text-sm font-medium rounded transition-all duration-200 hover:scale-105"
@@ -130,14 +130,14 @@ export function Navbar() {
                 ))}
                 <div className="flex flex-col gap-4 mt-6">
                   <a
-                    href="tel:+1234567890"
+                    href="tel:+17789998473"
                     className="flex items-center gap-3 text-muted-foreground"
                   >
                     <Phone className="w-5 h-5" />
-                    +1 234 567 890
+                    778-999-8473
                   </a>
                   <a
-                    href="https://wa.me/1234567890"
+                    href="https://wa.me/17789998473"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="flex items-center justify-center gap-2 px-6 py-3 bg-red-600 text-white font-medium rounded"

@@ -94,13 +94,13 @@ export function HeroSection() {
                 initial={{ opacity: 0, y: 30 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: 0.1 }}
-                className="text-5xl sm:text-6xl lg:text-7xl xl:text-8xl font-bold leading-[0.9] mb-6"
+                className="font-heading text-6xl sm:text-7xl lg:text-8xl xl:text-9xl leading-[0.95] tracking-wide mb-6"
               >
-                <span className="text-gradient">Precision.</span>
+                <span className="text-gradient">PRECISION.</span>
                 <br />
-                <span className="text-gradient">Performance.</span>
+                <span className="text-gradient">PERFORMANCE.</span>
                 <br />
-                <span className="text-gradient-red">Power.</span>
+                <span className="text-gradient-red">POWER.</span>
               </motion.h1>
 
               {/* Subtitle */}
