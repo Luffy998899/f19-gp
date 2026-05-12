@@ -73,8 +73,6 @@ export function ContactSection() {
 
     if (!formData.phone.trim()) {
       newErrors.phone = "Phone is required"
-    } else if (!/^[\d\s\-+()]+$/.test(formData.phone)) {
-      newErrors.phone = "Please enter a valid phone number"
     }
 
     if (!formData.message.trim()) {
@@ -91,15 +89,11 @@ export function ContactSection() {
     if (!validateForm()) return
 
     setIsSubmitting(true)
-
-    // Simulate form submission
     await new Promise((resolve) => setTimeout(resolve, 1500))
 
     setIsSubmitting(false)
     setIsSubmitted(true)
     setFormData({ name: "", email: "", phone: "", message: "" })
-
-    // Reset success message after 5 seconds
     setTimeout(() => setIsSubmitted(false), 5000)
   }
 
@@ -112,10 +106,8 @@ export function ContactSection() {
   }
 
   return (
-    <section ref={sectionRef} id="contact" className="py-24 relative overflow-hidden">
-      {/* Background */}
-      <div className="absolute inset-0 bg-gradient-to-b from-zinc-950 via-black to-zinc-950" />
-      <div className="absolute bottom-0 left-1/4 w-[600px] h-[600px] bg-red-600/5 rounded-full blur-[150px]" />
+    <section ref={sectionRef} id="contact" className="py-24 relative">
+      <div className="absolute inset-0 bg-zinc-950" />
 
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
@@ -125,15 +117,14 @@ export function ContactSection() {
           transition={{ duration: 0.6 }}
           className="text-center mb-16"
         >
-          <span className="inline-block text-red-500 text-sm font-medium tracking-widest uppercase mb-4">
+          <span className="inline-block text-red-500 text-sm font-semibold tracking-widest uppercase mb-4">
             Contact Us
           </span>
-          <h2 className="font-heading text-5xl md:text-6xl lg:text-7xl text-white mb-4 tracking-wide">
+          <h2 className="font-heading text-5xl md:text-6xl lg:text-7xl text-white mb-6 tracking-wide">
             GET IN TOUCH
           </h2>
-          <p className="text-muted-foreground max-w-2xl mx-auto">
-            Ready to upgrade your ride? Contact us for personalized recommendations
-            and expert advice on wheels and tyres.
+          <p className="text-zinc-400 max-w-2xl mx-auto text-lg">
+            Ready to upgrade your ride? Contact us for personalized recommendations.
           </p>
         </motion.div>
 
@@ -143,9 +134,10 @@ export function ContactSection() {
             initial={{ opacity: 0, x: -50 }}
             animate={isInView ? { opacity: 1, x: 0 } : {}}
             transition={{ duration: 0.6, delay: 0.2 }}
-            className="space-y-8"
+            className="space-y-6"
           >
-            <div className="space-y-6">
+            {/* Info Cards */}
+            <div className="grid sm:grid-cols-2 gap-4">
               {contactInfo.map((item, index) => (
                 <motion.div
                   key={index}
@@ -158,24 +150,24 @@ export function ContactSection() {
                       href={item.href}
                       target={item.href.startsWith("http") ? "_blank" : undefined}
                       rel={item.href.startsWith("http") ? "noopener noreferrer" : undefined}
-                      className="flex items-center gap-4 p-5 glass rounded-xl hover:bg-white/5 transition-colors group"
+                      className="flex items-start gap-4 p-5 bg-zinc-900 border border-white/5 rounded-xl hover:border-red-500/30 transition-colors"
                     >
-                      <div className="w-12 h-12 flex items-center justify-center bg-red-600/20 rounded-lg group-hover:bg-red-600/30 transition-colors">
-                        <item.icon className="w-6 h-6 text-red-500" />
+                      <div className="w-10 h-10 flex items-center justify-center bg-red-600/20 rounded-lg flex-shrink-0">
+                        <item.icon className="w-5 h-5 text-red-500" />
                       </div>
                       <div>
-                        <div className="text-sm text-muted-foreground">{item.label}</div>
-                        <div className="text-white font-medium">{item.value}</div>
+                        <div className="text-xs text-zinc-500 uppercase tracking-wide mb-1">{item.label}</div>
+                        <div className="text-white text-sm font-medium">{item.value}</div>
                       </div>
                     </a>
                   ) : (
-                    <div className="flex items-center gap-4 p-5 glass rounded-xl">
-                      <div className="w-12 h-12 flex items-center justify-center bg-red-600/20 rounded-lg">
-                        <item.icon className="w-6 h-6 text-red-500" />
+                    <div className="flex items-start gap-4 p-5 bg-zinc-900 border border-white/5 rounded-xl">
+                      <div className="w-10 h-10 flex items-center justify-center bg-red-600/20 rounded-lg flex-shrink-0">
+                        <item.icon className="w-5 h-5 text-red-500" />
                       </div>
                       <div>
-                        <div className="text-sm text-muted-foreground">{item.label}</div>
-                        <div className="text-white font-medium">{item.value}</div>
+                        <div className="text-xs text-zinc-500 uppercase tracking-wide mb-1">{item.label}</div>
+                        <div className="text-white text-sm font-medium">{item.value}</div>
                       </div>
                     </div>
                   )}
@@ -191,24 +183,24 @@ export function ContactSection() {
               initial={{ opacity: 0, y: 20 }}
               animate={isInView ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.4, delay: 0.7 }}
-              className="flex items-center justify-center gap-3 p-5 bg-green-600 hover:bg-green-700 rounded-xl text-white font-semibold transition-all duration-300 hover:scale-105"
+              className="flex items-center justify-center gap-3 p-5 bg-green-600 hover:bg-green-700 rounded-xl text-white font-semibold transition-colors"
             >
               <MessageCircle className="w-6 h-6" />
               Chat on WhatsApp
             </motion.a>
 
-            {/* Map Placeholder */}
+            {/* Map */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={isInView ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.4, delay: 0.8 }}
-              className="aspect-video rounded-xl overflow-hidden glass"
+              className="aspect-video rounded-xl overflow-hidden bg-zinc-900 border border-white/5"
             >
               <iframe
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2569.8!2d-119.4!3d49.88!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2s715+Evans+Ct%2C+Kelowna%2C+BC+V1X+6G4!5e0!3m2!1sen!2sca!4v1699999999999"
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2571.5!2d-119.42!3d49.86!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zNDnCsDUxJzM2LjAiTiAxMTnCsDI1JzEyLjAiVw!5e0!3m2!1sen!2sca!4v1699999999999!5m2!1sen!2sca"
                 width="100%"
                 height="100%"
-                style={{ border: 0, filter: "invert(90%) hue-rotate(180deg)" }}
+                style={{ border: 0, filter: "grayscale(100%) invert(92%) contrast(83%)" }}
                 allowFullScreen
                 loading="lazy"
                 referrerPolicy="no-referrer-when-downgrade"
@@ -223,117 +215,111 @@ export function ContactSection() {
             animate={isInView ? { opacity: 1, x: 0 } : {}}
             transition={{ duration: 0.6, delay: 0.3 }}
           >
-            <form onSubmit={handleSubmit} className="glass rounded-2xl p-8 space-y-6">
+            <form onSubmit={handleSubmit} className="bg-zinc-900 border border-white/5 rounded-2xl p-8">
               <h3 className="text-2xl font-bold text-white mb-6">Send Us a Message</h3>
 
               {isSubmitted && (
                 <motion.div
                   initial={{ opacity: 0, y: -10 }}
                   animate={{ opacity: 1, y: 0 }}
-                  className="flex items-center gap-3 p-4 bg-green-600/20 border border-green-600/30 rounded-lg text-green-400"
+                  className="flex items-center gap-3 p-4 bg-green-600/20 border border-green-600/30 rounded-lg text-green-400 mb-6"
                 >
                   <CheckCircle className="w-5 h-5" />
                   Thank you! We&apos;ll get back to you soon.
                 </motion.div>
               )}
 
-              <div>
-                <label htmlFor="name" className="block text-sm text-muted-foreground mb-2">
-                  Full Name
-                </label>
-                <input
-                  type="text"
-                  id="name"
-                  name="name"
-                  value={formData.name}
-                  onChange={handleChange}
-                  className={`w-full px-4 py-3 bg-white/5 border rounded-lg text-white placeholder-muted-foreground focus:outline-none focus:ring-2 focus:ring-red-500 transition-colors ${
-                    errors.name ? "border-red-500" : "border-white/10"
-                  }`}
-                  placeholder="John Doe"
-                />
-                {errors.name && (
-                  <p className="mt-1 text-sm text-red-500">{errors.name}</p>
-                )}
-              </div>
+              <div className="space-y-5">
+                <div>
+                  <label htmlFor="name" className="block text-sm text-zinc-400 mb-2">
+                    Full Name
+                  </label>
+                  <input
+                    type="text"
+                    id="name"
+                    name="name"
+                    value={formData.name}
+                    onChange={handleChange}
+                    className={`w-full px-4 py-3 bg-white/5 border rounded-lg text-white placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-red-500 ${
+                      errors.name ? "border-red-500" : "border-white/10"
+                    }`}
+                    placeholder="John Doe"
+                  />
+                  {errors.name && <p className="mt-1 text-sm text-red-500">{errors.name}</p>}
+                </div>
 
-              <div>
-                <label htmlFor="email" className="block text-sm text-muted-foreground mb-2">
-                  Email Address
-                </label>
-                <input
-                  type="email"
-                  id="email"
-                  name="email"
-                  value={formData.email}
-                  onChange={handleChange}
-                  className={`w-full px-4 py-3 bg-white/5 border rounded-lg text-white placeholder-muted-foreground focus:outline-none focus:ring-2 focus:ring-red-500 transition-colors ${
-                    errors.email ? "border-red-500" : "border-white/10"
-                  }`}
-                  placeholder="john@example.com"
-                />
-                {errors.email && (
-                  <p className="mt-1 text-sm text-red-500">{errors.email}</p>
-                )}
-              </div>
+                <div>
+                  <label htmlFor="email" className="block text-sm text-zinc-400 mb-2">
+                    Email Address
+                  </label>
+                  <input
+                    type="email"
+                    id="email"
+                    name="email"
+                    value={formData.email}
+                    onChange={handleChange}
+                    className={`w-full px-4 py-3 bg-white/5 border rounded-lg text-white placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-red-500 ${
+                      errors.email ? "border-red-500" : "border-white/10"
+                    }`}
+                    placeholder="john@example.com"
+                  />
+                  {errors.email && <p className="mt-1 text-sm text-red-500">{errors.email}</p>}
+                </div>
 
-              <div>
-                <label htmlFor="phone" className="block text-sm text-muted-foreground mb-2">
-                  Phone Number
-                </label>
-                <input
-                  type="tel"
-                  id="phone"
-                  name="phone"
-                  value={formData.phone}
-                  onChange={handleChange}
-                  className={`w-full px-4 py-3 bg-white/5 border rounded-lg text-white placeholder-muted-foreground focus:outline-none focus:ring-2 focus:ring-red-500 transition-colors ${
-                    errors.phone ? "border-red-500" : "border-white/10"
-                  }`}
-                  placeholder="+1 234 567 890"
-                />
-                {errors.phone && (
-                  <p className="mt-1 text-sm text-red-500">{errors.phone}</p>
-                )}
-              </div>
+                <div>
+                  <label htmlFor="phone" className="block text-sm text-zinc-400 mb-2">
+                    Phone Number
+                  </label>
+                  <input
+                    type="tel"
+                    id="phone"
+                    name="phone"
+                    value={formData.phone}
+                    onChange={handleChange}
+                    className={`w-full px-4 py-3 bg-white/5 border rounded-lg text-white placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-red-500 ${
+                      errors.phone ? "border-red-500" : "border-white/10"
+                    }`}
+                    placeholder="778-999-8473"
+                  />
+                  {errors.phone && <p className="mt-1 text-sm text-red-500">{errors.phone}</p>}
+                </div>
 
-              <div>
-                <label htmlFor="message" className="block text-sm text-muted-foreground mb-2">
-                  Message
-                </label>
-                <textarea
-                  id="message"
-                  name="message"
-                  value={formData.message}
-                  onChange={handleChange}
-                  rows={4}
-                  className={`w-full px-4 py-3 bg-white/5 border rounded-lg text-white placeholder-muted-foreground focus:outline-none focus:ring-2 focus:ring-red-500 transition-colors resize-none ${
-                    errors.message ? "border-red-500" : "border-white/10"
-                  }`}
-                  placeholder="Tell us about your requirements..."
-                />
-                {errors.message && (
-                  <p className="mt-1 text-sm text-red-500">{errors.message}</p>
-                )}
-              </div>
+                <div>
+                  <label htmlFor="message" className="block text-sm text-zinc-400 mb-2">
+                    Message
+                  </label>
+                  <textarea
+                    id="message"
+                    name="message"
+                    value={formData.message}
+                    onChange={handleChange}
+                    rows={4}
+                    className={`w-full px-4 py-3 bg-white/5 border rounded-lg text-white placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-red-500 resize-none ${
+                      errors.message ? "border-red-500" : "border-white/10"
+                    }`}
+                    placeholder="Tell us about your requirements..."
+                  />
+                  {errors.message && <p className="mt-1 text-sm text-red-500">{errors.message}</p>}
+                </div>
 
-              <button
-                type="submit"
-                disabled={isSubmitting}
-                className="w-full flex items-center justify-center gap-2 py-4 bg-red-600 hover:bg-red-700 disabled:bg-red-600/50 text-white font-semibold rounded-lg transition-all duration-300 hover:scale-105 disabled:scale-100"
-              >
-                {isSubmitting ? (
-                  <>
-                    <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-                    Sending...
-                  </>
-                ) : (
-                  <>
-                    <Send className="w-5 h-5" />
-                    Send Message
-                  </>
-                )}
-              </button>
+                <button
+                  type="submit"
+                  disabled={isSubmitting}
+                  className="w-full flex items-center justify-center gap-2 py-4 bg-red-600 hover:bg-red-700 disabled:bg-red-600/50 text-white font-semibold rounded-lg transition-colors"
+                >
+                  {isSubmitting ? (
+                    <>
+                      <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                      Sending...
+                    </>
+                  ) : (
+                    <>
+                      <Send className="w-5 h-5" />
+                      Send Message
+                    </>
+                  )}
+                </button>
+              </div>
             </form>
           </motion.div>
         </div>

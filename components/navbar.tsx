@@ -8,7 +8,6 @@ import Link from "next/link"
 const navLinks = [
   { name: "Home", href: "#home" },
   { name: "Products", href: "#products" },
-  { name: "Configurator", href: "#configurator" },
   { name: "About", href: "#about" },
   { name: "Gallery", href: "#gallery" },
   { name: "Contact", href: "#contact" },
@@ -41,18 +40,20 @@ export function Navbar() {
         animate={{ y: 0 }}
         transition={{ duration: 0.6, ease: "easeOut" }}
         className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-          scrolled ? "glass py-3" : "bg-transparent py-5"
+          scrolled 
+            ? "bg-black/90 backdrop-blur-lg border-b border-white/5 py-4" 
+            : "bg-transparent py-6"
         }`}
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between">
             {/* Logo */}
-            <Link href="#home" className="flex items-center gap-2 group">
-              <span className="font-heading text-3xl tracking-wide">
+            <Link href="#home" className="flex items-center gap-3">
+              <span className="font-heading text-2xl sm:text-3xl tracking-wide">
                 <span className="text-white">FORMULA</span>
                 <span className="text-red-500">19</span>
               </span>
-              <span className="text-[10px] text-muted-foreground tracking-[0.2em] uppercase hidden sm:block">
+              <span className="text-xs text-zinc-500 tracking-widest uppercase hidden sm:block">
                 Tyres
               </span>
             </Link>
@@ -63,10 +64,9 @@ export function Navbar() {
                 <button
                   key={link.name}
                   onClick={() => handleNavClick(link.href)}
-                  className="text-sm text-muted-foreground hover:text-white transition-colors duration-200 relative group"
+                  className="text-sm font-medium text-zinc-400 hover:text-white transition-colors duration-200"
                 >
                   {link.name}
-                  <span className="absolute -bottom-1 left-0 w-0 h-px bg-red-500 transition-all duration-300 group-hover:w-full" />
                 </button>
               ))}
             </div>
@@ -75,16 +75,16 @@ export function Navbar() {
             <div className="hidden lg:flex items-center gap-4">
               <a
                 href="tel:+17789998473"
-                className="flex items-center gap-2 text-sm text-muted-foreground hover:text-white transition-colors"
+                className="flex items-center gap-2 text-sm text-zinc-400 hover:text-white transition-colors"
               >
                 <Phone className="w-4 h-4" />
-                <span className="hidden xl:inline">778-999-8473</span>
+                <span>778-999-8473</span>
               </a>
               <a
                 href="https://wa.me/17789998473"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center gap-2 px-4 py-2 bg-red-600 hover:bg-red-700 text-white text-sm font-medium rounded transition-all duration-200 hover:scale-105"
+                className="flex items-center gap-2 px-5 py-2.5 bg-red-600 hover:bg-red-700 text-white text-sm font-semibold rounded-lg transition-colors"
               >
                 <MessageCircle className="w-4 h-4" />
                 WhatsApp
@@ -107,15 +107,14 @@ export function Navbar() {
       <AnimatePresence>
         {isOpen && (
           <motion.div
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
             transition={{ duration: 0.2 }}
-            className="fixed inset-0 z-40 lg:hidden"
+            className="fixed inset-0 z-40 lg:hidden bg-black"
           >
-            <div className="absolute inset-0 bg-black/95 backdrop-blur-lg" />
-            <div className="relative pt-24 px-6">
-              <div className="flex flex-col gap-4">
+            <div className="pt-24 px-6">
+              <div className="flex flex-col gap-2">
                 {navLinks.map((link, index) => (
                   <motion.button
                     key={link.name}
@@ -123,29 +122,30 @@ export function Navbar() {
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ delay: index * 0.1 }}
                     onClick={() => handleNavClick(link.href)}
-                    className="text-2xl font-medium text-white text-left py-3 border-b border-white/10"
+                    className="text-2xl font-medium text-white text-left py-4 border-b border-white/10"
                   >
                     {link.name}
                   </motion.button>
                 ))}
-                <div className="flex flex-col gap-4 mt-6">
-                  <a
-                    href="tel:+17789998473"
-                    className="flex items-center gap-3 text-muted-foreground"
-                  >
-                    <Phone className="w-5 h-5" />
-                    778-999-8473
-                  </a>
-                  <a
-                    href="https://wa.me/17789998473"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex items-center justify-center gap-2 px-6 py-3 bg-red-600 text-white font-medium rounded"
-                  >
-                    <MessageCircle className="w-5 h-5" />
-                    WhatsApp Us
-                  </a>
-                </div>
+              </div>
+              
+              <div className="flex flex-col gap-4 mt-8">
+                <a
+                  href="tel:+17789998473"
+                  className="flex items-center gap-3 text-zinc-400 text-lg"
+                >
+                  <Phone className="w-5 h-5" />
+                  778-999-8473
+                </a>
+                <a
+                  href="https://wa.me/17789998473"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center justify-center gap-2 px-6 py-4 bg-red-600 text-white font-semibold rounded-lg"
+                >
+                  <MessageCircle className="w-5 h-5" />
+                  WhatsApp Us
+                </a>
               </div>
             </div>
           </motion.div>
