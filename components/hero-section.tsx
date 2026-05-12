@@ -31,12 +31,9 @@ export function HeroSection({ content }: HeroSectionProps) {
               </span>
             </div>
 
-            <h1 className="font-display text-foreground uppercase leading-[0.9] tracking-tight text-[clamp(2.5rem,7vw,5.5rem)]">
-              Built for the road.
-              <br />
-              Engineered for
-              <span className="text-primary"> the track</span>
-              <span className="inline-block ml-2 align-middle w-8 h-8 lg:w-10 lg:h-10 checkered" />
+            <h1 className="font-display text-foreground uppercase leading-[0.95] tracking-tight text-[clamp(1.875rem,4.5vw,3.25rem)] max-w-[18ch]">
+              Built for the road. Engineered for
+              <span className="text-primary"> the track.</span>
             </h1>
 
             <p className="mt-7 max-w-xl text-base lg:text-lg text-muted-foreground leading-relaxed">
