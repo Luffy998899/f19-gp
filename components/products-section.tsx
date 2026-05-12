@@ -1,76 +1,14 @@
 "use client"
 
 import { useState, useRef } from "react"
-import { motion, useInView } from "framer-motion"
-import { Star, Eye, ShoppingCart, ChevronLeft, ChevronRight, X } from "lucide-react"
+import { motion, useInView, AnimatePresence } from "framer-motion"
+import { Star, Eye, X, Phone } from "lucide-react"
 import Image from "next/image"
-
-const products = [
-  {
-    id: 1,
-    name: "BBS Sport Alloy",
-    category: "Performance",
-    price: "$899",
-    rating: 4.9,
-    reviews: 234,
-    specs: { size: '19"', width: "255mm", profile: "35" },
-    image: "/images/wheel-1.png",
-  },
-  {
-    id: 2,
-    name: "Lexani UHP-207",
-    category: "Ultra High Performance",
-    price: "$1,199",
-    rating: 5.0,
-    reviews: 189,
-    specs: { size: '20"', width: "275mm", profile: "30" },
-    image: "/images/wheel-2.png",
-  },
-  {
-    id: 3,
-    name: "Steel Classic",
-    category: "Standard",
-    price: "$299",
-    rating: 4.8,
-    reviews: 156,
-    specs: { size: '17"', width: "225mm", profile: "45" },
-    image: "/images/wheel-3.png",
-  },
-  {
-    id: 4,
-    name: "Off-Road Mud Terrain",
-    category: "Off-Road",
-    price: "$1,499",
-    rating: 4.9,
-    reviews: 312,
-    specs: { size: '18"', width: "285mm", profile: "70" },
-    image: "/images/wheel-4.png",
-  },
-  {
-    id: 5,
-    name: "Winter Pro",
-    category: "All-Season",
-    price: "$799",
-    rating: 4.7,
-    reviews: 278,
-    specs: { size: '18"', width: "245mm", profile: "45" },
-    image: "/images/wheel-5.png",
-  },
-  {
-    id: 6,
-    name: "Steel Utility",
-    category: "Standard",
-    price: "$249",
-    rating: 4.6,
-    reviews: 198,
-    specs: { size: '16"', width: "205mm", profile: "55" },
-    image: "/images/wheel-6.png",
-  },
-]
+import type { Product } from "@/lib/data"
 
 interface ProductCardProps {
-  product: typeof products[0]
-  onQuickView: (product: typeof products[0]) => void
+  product: Product
+  onQuickView: (product: Product) => void
   index: number
 }
 
@@ -82,68 +20,81 @@ function ProductCard({ product, onQuickView, index }: ProductCardProps) {
       initial={{ opacity: 0, y: 30 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
-      transition={{ duration: 0.5, delay: index * 0.1 }}
+      transition={{ duration: 0.5, delay: index * 0.08 }}
       className="group"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
-      <div className="relative bg-zinc-900/50 border border-white/5 rounded-2xl overflow-hidden hover:border-red-500/30 transition-all duration-300">
-        {/* Image Container */}
-        <div className="relative aspect-square bg-gradient-to-br from-zinc-800 to-zinc-900 p-6">
-          <div className="relative w-full h-full">
-            <Image
-              src={product.image}
-              alt={product.name}
-              fill
-              className={`object-contain transition-transform duration-500 ${
-                isHovered ? "scale-110" : "scale-100"
-              }`}
-            />
+      <div className="relative overflow-hidden rounded-2xl border border-white/5 bg-gradient-to-br from-zinc-900 to-zinc-950 transition-all duration-300 hover:border-red-500/40 hover:shadow-[0_0_30px_rgba(239,68,68,0.15)]">
+        {/* Dark image frame */}
+        <div className="relative aspect-square overflow-hidden bg-gradient-to-br from-zinc-800/40 via-black to-zinc-900/60 p-6">
+          {/* Red radial glow */}
+          <div className="absolute inset-8 rounded-full bg-red-600/10 blur-3xl" />
+          {/* Inner ring */}
+          <div className="absolute inset-4 rounded-full border border-white/[0.04]" />
+
+          <div className="relative h-full w-full">
+            {product.image_url && (
+              <Image
+                src={product.image_url || "/placeholder.svg"}
+                alt={product.name}
+                fill
+                className={`object-contain mix-blend-screen brightness-110 transition-transform duration-500 ${
+                  isHovered ? "scale-110" : "scale-100"
+                }`}
+              />
+            )}
           </div>
-          
-          {/* Category Badge */}
-          <div className="absolute top-4 left-4">
-            <span className="px-3 py-1.5 text-xs font-semibold bg-red-600 text-white rounded-full">
+
+          <div className="absolute left-4 top-4">
+            <span className="rounded-full bg-red-600 px-3 py-1.5 text-[10px] font-semibold uppercase tracking-wider text-white">
               {product.category}
             </span>
           </div>
-          
-          {/* Quick Actions */}
+
+          {product.is_featured && (
+            <div className="absolute right-4 top-4">
+              <span className="rounded-full border border-white/20 bg-black/60 px-3 py-1.5 text-[10px] font-semibold uppercase tracking-wider text-white backdrop-blur-sm">
+                Featured
+              </span>
+            </div>
+          )}
+
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: isHovered ? 1 : 0, y: isHovered ? 0 : 20 }}
-            className="absolute bottom-4 left-4 right-4 flex gap-2"
+            className="absolute bottom-4 left-4 right-4"
           >
             <button
               onClick={() => onQuickView(product)}
-              className="flex-1 flex items-center justify-center gap-2 py-3 bg-white/10 backdrop-blur-md text-white text-sm font-medium rounded-lg hover:bg-white/20 transition-colors"
+              className="flex w-full items-center justify-center gap-2 rounded-lg bg-white/10 py-3 text-sm font-medium text-white backdrop-blur-md transition-colors hover:bg-white/20"
             >
-              <Eye className="w-4 h-4" />
+              <Eye className="h-4 w-4" />
               Quick View
-            </button>
-            <button className="flex items-center justify-center p-3 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors">
-              <ShoppingCart className="w-4 h-4" />
             </button>
           </motion.div>
         </div>
 
-        {/* Content */}
         <div className="p-5">
-          <h3 className="text-lg font-bold text-white mb-2">{product.name}</h3>
-          
-          <div className="flex items-center gap-2 mb-3">
+          <h3 className="mb-2 text-lg font-bold text-white">{product.name}</h3>
+
+          <div className="mb-3 flex items-center gap-2">
             <div className="flex items-center gap-1">
-              <Star className="w-4 h-4 fill-yellow-500 text-yellow-500" />
-              <span className="text-sm text-white font-medium">{product.rating}</span>
+              <Star className="h-4 w-4 fill-yellow-500 text-yellow-500" />
+              <span className="text-sm font-medium text-white">{product.rating}</span>
             </div>
-            <span className="text-sm text-zinc-500">({product.reviews} reviews)</span>
+            <span className="text-sm text-zinc-500">
+              ({product.reviews_count} reviews)
+            </span>
           </div>
-          
-          <div className="flex items-center justify-between pt-3 border-t border-white/5">
+
+          <div className="flex items-center justify-between border-t border-white/5 pt-3">
             <div className="text-sm text-zinc-400">
-              {product.specs.size} | {product.specs.width}
+              {product.size && product.width
+                ? `${product.size} | ${product.width}`
+                : product.size || product.width}
             </div>
-            <div className="text-xl font-bold text-red-500">{product.price}</div>
+            <div className="text-xl font-bold text-red-500">${product.price}</div>
           </div>
         </div>
       </div>
@@ -151,12 +102,13 @@ function ProductCard({ product, onQuickView, index }: ProductCardProps) {
   )
 }
 
-interface QuickViewModalProps {
-  product: typeof products[0] | null
+function QuickViewModal({
+  product,
+  onClose,
+}: {
+  product: Product | null
   onClose: () => void
-}
-
-function QuickViewModal({ product, onClose }: QuickViewModalProps) {
+}) {
   if (!product) return null
 
   return (
@@ -173,35 +125,38 @@ function QuickViewModal({ product, onClose }: QuickViewModalProps) {
         animate={{ scale: 1, opacity: 1 }}
         exit={{ scale: 0.9, opacity: 0 }}
         onClick={(e) => e.stopPropagation()}
-        className="relative w-full max-w-4xl bg-zinc-900 border border-white/10 rounded-2xl overflow-hidden"
+        className="relative w-full max-w-4xl overflow-hidden rounded-2xl border border-white/10 bg-zinc-900"
       >
         <button
           onClick={onClose}
-          className="absolute top-4 right-4 z-10 p-2 bg-white/10 rounded-full hover:bg-white/20 transition-colors"
+          className="absolute right-4 top-4 z-10 rounded-full bg-white/10 p-2 transition-colors hover:bg-white/20"
         >
-          <X className="w-6 h-6 text-white" />
+          <X className="h-6 w-6 text-white" />
         </button>
 
         <div className="grid md:grid-cols-2">
-          <div className="relative aspect-square bg-gradient-to-br from-zinc-800 to-zinc-900 p-8">
-            <Image
-              src={product.image}
-              alt={product.name}
-              fill
-              className="object-contain p-8"
-            />
+          <div className="relative aspect-square bg-gradient-to-br from-zinc-800/40 via-black to-zinc-900/60 p-8">
+            <div className="absolute inset-12 rounded-full bg-red-600/10 blur-3xl" />
+            {product.image_url && (
+              <Image
+                src={product.image_url || "/placeholder.svg"}
+                alt={product.name}
+                fill
+                className="object-contain p-8 mix-blend-screen brightness-110"
+              />
+            )}
           </div>
-          <div className="p-8 flex flex-col justify-center">
-            <span className="inline-block px-3 py-1 text-xs font-semibold bg-red-600 text-white rounded-full w-fit mb-4">
+          <div className="flex flex-col justify-center p-8">
+            <span className="mb-4 inline-block w-fit rounded-full bg-red-600 px-3 py-1 text-xs font-semibold uppercase tracking-wider text-white">
               {product.category}
             </span>
-            <h2 className="text-3xl font-bold text-white mb-3">{product.name}</h2>
-            <div className="flex items-center gap-2 mb-6">
+            <h2 className="mb-3 text-3xl font-bold text-white">{product.name}</h2>
+            <div className="mb-6 flex items-center gap-2">
               <div className="flex items-center gap-1">
                 {[...Array(5)].map((_, i) => (
                   <Star
                     key={i}
-                    className={`w-5 h-5 ${
+                    className={`h-5 w-5 ${
                       i < Math.floor(product.rating)
                         ? "fill-yellow-500 text-yellow-500"
                         : "text-zinc-600"
@@ -210,35 +165,49 @@ function QuickViewModal({ product, onClose }: QuickViewModalProps) {
                 ))}
               </div>
               <span className="text-zinc-400">
-                {product.rating} ({product.reviews} reviews)
+                {product.rating} ({product.reviews_count} reviews)
               </span>
             </div>
 
-            <div className="space-y-3 mb-6">
-              <div className="flex justify-between py-3 border-b border-white/10">
-                <span className="text-zinc-400">Size</span>
-                <span className="text-white font-medium">{product.specs.size}</span>
-              </div>
-              <div className="flex justify-between py-3 border-b border-white/10">
-                <span className="text-zinc-400">Width</span>
-                <span className="text-white font-medium">{product.specs.width}</span>
-              </div>
-              <div className="flex justify-between py-3 border-b border-white/10">
-                <span className="text-zinc-400">Profile</span>
-                <span className="text-white font-medium">{product.specs.profile}</span>
-              </div>
+            {product.description && (
+              <p className="mb-6 text-sm leading-relaxed text-zinc-400">
+                {product.description}
+              </p>
+            )}
+
+            <div className="mb-6 space-y-3">
+              {product.size && (
+                <div className="flex justify-between border-b border-white/10 py-3">
+                  <span className="text-zinc-400">Size</span>
+                  <span className="font-medium text-white">{product.size}</span>
+                </div>
+              )}
+              {product.width && (
+                <div className="flex justify-between border-b border-white/10 py-3">
+                  <span className="text-zinc-400">Width</span>
+                  <span className="font-medium text-white">{product.width}</span>
+                </div>
+              )}
+              {product.profile && (
+                <div className="flex justify-between border-b border-white/10 py-3">
+                  <span className="text-zinc-400">Profile</span>
+                  <span className="font-medium text-white">{product.profile}</span>
+                </div>
+              )}
             </div>
 
-            <div className="text-4xl font-bold text-red-500 mb-6">{product.price}</div>
-
-            <div className="flex gap-4">
-              <button className="flex-1 py-4 bg-red-600 hover:bg-red-700 text-white font-semibold rounded-lg transition-colors">
-                Add to Cart
-              </button>
-              <button className="px-6 py-4 bg-white/5 border border-white/10 hover:bg-white/10 text-white font-semibold rounded-lg transition-colors">
-                Enquire
-              </button>
+            <div className="mb-6 text-4xl font-bold text-red-500">
+              ${product.price}
             </div>
+
+            <a
+              href="#contact"
+              onClick={onClose}
+              className="flex items-center justify-center gap-2 rounded-lg bg-red-600 py-4 font-semibold text-white transition-colors hover:bg-red-700"
+            >
+              <Phone className="h-5 w-5" />
+              Enquire Now
+            </a>
           </div>
         </div>
       </motion.div>
@@ -246,69 +215,65 @@ function QuickViewModal({ product, onClose }: QuickViewModalProps) {
   )
 }
 
-export function ProductsSection() {
-  const [selectedProduct, setSelectedProduct] = useState<typeof products[0] | null>(null)
+interface ProductsSectionProps {
+  products: Product[]
+}
+
+export function ProductsSection({ products }: ProductsSectionProps) {
+  const [selectedProduct, setSelectedProduct] = useState<Product | null>(null)
   const sectionRef = useRef<HTMLElement>(null)
   const isInView = useInView(sectionRef, { once: true, margin: "-100px" })
 
   return (
-    <section ref={sectionRef} id="products" className="py-24 relative">
-      {/* Background */}
+    <section ref={sectionRef} id="products" className="relative py-24">
       <div className="absolute inset-0 bg-black" />
+      <div className="pointer-events-none absolute left-1/2 top-0 h-[500px] w-[800px] -translate-x-1/2 rounded-full bg-red-600/5 blur-[120px]" />
 
-      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Header */}
+      <div className="relative z-10 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.6 }}
-          className="text-center mb-16"
+          className="mb-16 text-center"
         >
-          <span className="inline-block text-red-500 text-sm font-semibold tracking-widest uppercase mb-4">
+          <span className="mb-4 inline-block text-sm font-semibold uppercase tracking-widest text-red-500">
             Premium Collection
           </span>
-          <h2 className="font-heading text-5xl md:text-6xl lg:text-7xl text-white mb-6 tracking-wide">
+          <h2 className="mb-6 font-heading text-5xl tracking-wide text-white md:text-6xl lg:text-7xl">
             FEATURED PRODUCTS
           </h2>
-          <p className="text-zinc-400 max-w-2xl mx-auto text-lg">
-            Discover our handpicked selection of premium tyres and alloy wheels,
-            engineered for performance and designed for perfection.
+          <p className="mx-auto max-w-2xl text-lg text-zinc-400">
+            Hand-picked tires and wheels engineered for performance and designed
+            for the road ahead.
           </p>
         </motion.div>
 
-        {/* Products Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {products.map((product, index) => (
-            <ProductCard
-              key={product.id}
-              product={product}
-              onQuickView={setSelectedProduct}
-              index={index}
-            />
-          ))}
-        </div>
-
-        {/* View All Button */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6, delay: 0.4 }}
-          className="text-center mt-12"
-        >
-          <button className="px-8 py-4 bg-white/5 border border-white/10 hover:bg-white/10 text-white font-semibold rounded-lg transition-all duration-300">
-            View All Products
-          </button>
-        </motion.div>
+        {products.length === 0 ? (
+          <div className="rounded-2xl border border-white/5 bg-zinc-900/50 p-12 text-center text-zinc-400">
+            No products available yet. Check back soon.
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            {products.map((product, index) => (
+              <ProductCard
+                key={product.id}
+                product={product}
+                onQuickView={setSelectedProduct}
+                index={index}
+              />
+            ))}
+          </div>
+        )}
       </div>
 
-      {/* Quick View Modal */}
-      {selectedProduct && (
-        <QuickViewModal
-          product={selectedProduct}
-          onClose={() => setSelectedProduct(null)}
-        />
-      )}
+      <AnimatePresence>
+        {selectedProduct && (
+          <QuickViewModal
+            product={selectedProduct}
+            onClose={() => setSelectedProduct(null)}
+          />
+        )}
+      </AnimatePresence>
     </section>
   )
 }
