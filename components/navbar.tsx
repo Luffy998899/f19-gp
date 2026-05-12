@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react"
 import Link from "next/link"
+import Image from "next/image"
 import { Menu, X, Phone } from "lucide-react"
 
 interface NavbarProps {
@@ -56,17 +57,15 @@ export function Navbar({ content }: NavbarProps) {
         }`}
       >
         <div className="mx-auto max-w-[1400px] flex items-center justify-between px-6 h-20">
-          <Link href="#top" className="flex items-center gap-3 group">
-            <div className="relative w-11 h-11 bg-primary flex items-center justify-center">
-              <span className="font-display text-2xl text-primary-foreground leading-none">F19</span>
-              <span className="absolute -bottom-1 -right-1 w-2.5 h-2.5 bg-foreground" />
-            </div>
-            <div className="leading-none">
-              <div className="font-display text-2xl tracking-tight text-foreground">FORMULA 19</div>
-              <div className="text-[10px] font-mono uppercase tracking-[0.2em] text-muted-foreground mt-1">
-                Tires · Wheels · Service
-              </div>
-            </div>
+          <Link href="#top" className="flex items-center group" aria-label="Formula 19 — All About Tires">
+            <Image
+              src="/images/logo.png"
+              alt="Formula 19 — All About Tires"
+              width={220}
+              height={64}
+              priority
+              className="h-12 w-auto md:h-14 object-contain"
+            />
           </Link>
 
           <nav className="hidden lg:flex items-center gap-1">
