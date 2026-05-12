@@ -1,113 +1,81 @@
 "use client"
 
-import { useRef, useState } from "react"
-import { motion, useInView, AnimatePresence } from "framer-motion"
-import { ChevronDown } from "lucide-react"
+import { useState } from "react"
 import type { Faq } from "@/lib/data"
 
-interface FAQSectionProps {
+type Props = {
   faqs: Faq[]
 }
 
-export function FAQSection({ faqs }: FAQSectionProps) {
-  const [openIndex, setOpenIndex] = useState<number | null>(0)
-  const sectionRef = useRef<HTMLElement>(null)
-  const isInView = useInView(sectionRef, { once: true, margin: "-100px" })
+export function FAQSection({ faqs }: Props) {
+  const [openId, setOpenId] = useState<string | null>(faqs[0]?.id ?? null)
+  if (!faqs.length) return null
 
   return (
-    <section ref={sectionRef} id="faq" className="relative py-24">
-      <div className="absolute inset-0 bg-black" />
-
-      <div className="relative z-10 mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.6 }}
-          className="mb-12 text-center"
-        >
-          <span className="mb-4 inline-block text-sm font-semibold uppercase tracking-widest text-red-500">
-            FAQ
-          </span>
-          <h2 className="mb-6 font-heading text-5xl tracking-wide text-white md:text-6xl">
-            COMMON QUESTIONS
-          </h2>
-          <p className="mx-auto max-w-xl text-zinc-400">
-            Find answers to frequently asked questions about our products and
-            services.
-          </p>
-        </motion.div>
-
-        {faqs.length === 0 ? (
-          <div className="rounded-2xl border border-white/5 bg-zinc-900/50 p-12 text-center text-zinc-400">
-            No FAQs yet.
+    <section className="py-24 md:py-32 border-b border-border">
+      <div className="mx-auto max-w-[1600px] px-6 md:px-10">
+        <div className="grid grid-cols-12 gap-y-12 md:gap-x-10">
+          <div className="col-span-12 lg:col-span-4">
+            <div className="flex items-center gap-2 text-xs font-mono uppercase tracking-widest text-muted-foreground mb-6">
+              <span className="inline-block h-px w-8 bg-foreground" />
+              Reference
+            </div>
+            <h2 className="font-serif text-5xl md:text-6xl tracking-tight leading-[0.95]">
+              Frequently
+              <br />
+              <span className="italic text-accent">asked.</span>
+            </h2>
+            <p className="mt-6 text-sm text-muted-foreground max-w-xs">
+              Cannot find what you&apos;re after? Reach the workshop directly — we reply within one business day.
+            </p>
           </div>
-        ) : (
-          <div className="space-y-3">
-            {faqs.map((faq, index) => {
-              const isOpen = openIndex === index
-              return (
-                <motion.div
-                  key={faq.id}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.4, delay: index * 0.05 }}
-                  className="overflow-hidden rounded-xl border border-white/5 bg-zinc-900"
-                >
-                  <button
-                    onClick={() => setOpenIndex(isOpen ? null : index)}
-                    className="flex w-full items-center justify-between p-6 text-left transition-colors hover:bg-white/5"
-                  >
-                    <span className="pr-4 text-lg font-medium text-white">
-                      {faq.question}
-                    </span>
-                    <motion.div
-                      animate={{ rotate: isOpen ? 180 : 0 }}
-                      transition={{ duration: 0.2 }}
-                      className="flex-shrink-0"
+
+          <div className="col-span-12 lg:col-span-8">
+            <div className="border-t border-border">
+              {faqs.map((f, i) => {
+                const open = openId === f.id
+                return (
+                  <div key={f.id} className="border-b border-border">
+                    <button
+                      type="button"
+                      onClick={() => setOpenId(open ? null : f.id)}
+                      aria-expanded={open}
+                      className="w-full flex items-start justify-between gap-6 py-6 md:py-8 text-left group"
                     >
-                      <ChevronDown className="h-5 w-5 text-red-500" />
-                    </motion.div>
-                  </button>
-                  <AnimatePresence>
-                    {isOpen && (
-                      <motion.div
-                        initial={{ height: 0, opacity: 0 }}
-                        animate={{ height: "auto", opacity: 1 }}
-                        exit={{ height: 0, opacity: 0 }}
-                        transition={{ duration: 0.3 }}
+                      <div className="flex items-baseline gap-6 md:gap-10">
+                        <span className="font-mono text-xs text-muted-foreground tabular-nums pt-1">
+                          {String(i + 1).padStart(2, "0")}
+                        </span>
+                        <span className="font-serif text-2xl md:text-3xl tracking-tight leading-snug">
+                          {f.question}
+                        </span>
+                      </div>
+                      <span
+                        className={`font-serif text-3xl md:text-4xl leading-none mt-1 transition-transform duration-300 ${
+                          open ? "rotate-45 text-accent" : ""
+                        }`}
+                        aria-hidden
                       >
-                        <div className="px-6 pb-6">
-                          <p className="leading-relaxed text-zinc-400">
-                            {faq.answer}
-                          </p>
-                        </div>
-                      </motion.div>
-                    )}
-                  </AnimatePresence>
-                </motion.div>
-              )
-            })}
+                        +
+                      </span>
+                    </button>
+                    <div
+                      className={`grid transition-[grid-template-rows] duration-300 ease-out ${
+                        open ? "grid-rows-[1fr]" : "grid-rows-[0fr]"
+                      }`}
+                    >
+                      <div className="overflow-hidden">
+                        <p className="pl-0 md:pl-[5.5rem] pr-6 pb-8 text-base text-muted-foreground leading-relaxed">
+                          {f.answer}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                )
+              })}
+            </div>
           </div>
-        )}
-
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6, delay: 0.3 }}
-          className="mt-12 text-center"
-        >
-          <p className="mb-4 text-zinc-400">
-            Still have questions? We&apos;re here to help.
-          </p>
-          <a
-            href="#contact"
-            className="inline-flex rounded-lg bg-red-600 px-8 py-4 font-semibold text-white transition-colors hover:bg-red-700"
-          >
-            Contact Us
-          </a>
-        </motion.div>
+        </div>
       </div>
     </section>
   )

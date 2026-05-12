@@ -1,5 +1,7 @@
 import { Navbar } from "@/components/navbar"
 import { HeroSection } from "@/components/hero-section"
+import { MarqueeStrip } from "@/components/marquee-strip"
+import { ServicesSection } from "@/components/services-section"
 import { ProductsSection } from "@/components/products-section"
 import { AboutSection } from "@/components/about-section"
 import { GallerySection } from "@/components/gallery-section"
@@ -20,9 +22,11 @@ export default async function Home() {
   ])
 
   return (
-    <main className="relative bg-black">
+    <main className="relative bg-background text-foreground">
       <Navbar content={content} />
       <HeroSection content={content} />
+      <MarqueeStrip />
+      <ServicesSection />
       <ProductsSection products={products} />
       <AboutSection content={content} />
       <GallerySection images={gallery} />

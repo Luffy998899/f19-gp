@@ -1,152 +1,140 @@
-"use client"
-
 import Link from "next/link"
-import { Facebook, Instagram, MapPin, Phone, Mail } from "lucide-react"
+import { Facebook, Instagram } from "lucide-react"
 
-interface FooterProps {
+type Props = {
   content: Record<string, string>
 }
 
-const footerLinks = {
-  products: [
-    { name: "Performance Tires", href: "#products" },
-    { name: "Alloy Wheels", href: "#products" },
-    { name: "Steel Wheels", href: "#products" },
-    { name: "Off-Road Tires", href: "#products" },
-  ],
-  company: [
-    { name: "About Us", href: "#about" },
-    { name: "Gallery", href: "#gallery" },
-    { name: "FAQ", href: "#faq" },
-    { name: "Contact", href: "#contact" },
-  ],
-}
-
-export function Footer({ content }: FooterProps) {
+export function Footer({ content }: Props) {
   const phone = content.contact_phone || "778-999-8473"
   const email = content.contact_email || "formula19tires@gmail.com"
   const addressLine1 = content.contact_address_line1 || "Unit 1, 715 Evans CT"
   const addressLine2 = content.contact_address_line2 || "Kelowna, BC V1X 6G4"
 
-  const scrollToSection = (href: string) => {
-    document.querySelector(href)?.scrollIntoView({ behavior: "smooth" })
-  }
-
   return (
-    <footer className="relative border-t border-white/10 bg-zinc-950">
-      <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 gap-12 md:grid-cols-2 lg:grid-cols-4">
-          {/* Brand */}
-          <div className="lg:col-span-2">
-            <Link href="#home" className="mb-6 inline-block">
-              <span className="font-heading text-3xl tracking-wide">
-                <span className="text-white">FORMULA</span>
-                <span className="text-red-500">19</span>
-              </span>
-              <span className="mt-1 block text-xs uppercase tracking-widest text-zinc-500">
-                Tyres
-              </span>
-            </Link>
-            <p className="mb-6 max-w-md text-sm leading-relaxed text-zinc-400">
-              Kelowna&apos;s premier destination for premium tires, alloy
-              wheels, and expert installation services.
-            </p>
-
-            <div className="space-y-3">
-              <a
-                href={`tel:+${phone.replace(/\D/g, "")}`}
-                className="flex items-center gap-3 text-sm text-zinc-400 transition-colors hover:text-white"
-              >
-                <Phone className="h-4 w-4 text-red-500" />
-                {phone}
-              </a>
-              <a
-                href={`mailto:${email}`}
-                className="flex items-center gap-3 text-sm text-zinc-400 transition-colors hover:text-white"
-              >
-                <Mail className="h-4 w-4 text-red-500" />
-                {email}
-              </a>
-              <div className="flex items-start gap-3 text-sm text-zinc-400">
-                <MapPin className="mt-0.5 h-4 w-4 flex-shrink-0 text-red-500" />
-                <span>
-                  {addressLine1}
-                  <br />
-                  {addressLine2}
-                </span>
-              </div>
+    <footer className="bg-foreground text-background">
+      {/* Massive wordmark band */}
+      <div className="border-b border-background/10 py-16 md:py-24 overflow-hidden">
+        <div className="mx-auto max-w-[1600px] px-6 md:px-10">
+          <Link href="#top" className="block group">
+            <div className="font-serif text-[clamp(4rem,18vw,18rem)] leading-[0.85] tracking-[-0.03em]">
+              Formula <span className="italic text-accent">19</span>
             </div>
-          </div>
-
-          <div>
-            <h4 className="mb-4 font-semibold text-white">Products</h4>
-            <ul className="space-y-3">
-              {footerLinks.products.map((link) => (
-                <li key={link.name}>
-                  <button
-                    onClick={() => scrollToSection(link.href)}
-                    className="text-sm text-zinc-400 transition-colors hover:text-white"
-                  >
-                    {link.name}
-                  </button>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          <div>
-            <h4 className="mb-4 font-semibold text-white">Company</h4>
-            <ul className="space-y-3">
-              {footerLinks.company.map((link) => (
-                <li key={link.name}>
-                  <button
-                    onClick={() => scrollToSection(link.href)}
-                    className="text-sm text-zinc-400 transition-colors hover:text-white"
-                  >
-                    {link.name}
-                  </button>
-                </li>
-              ))}
-              <li>
-                <Link
-                  href="/admin/login"
-                  className="text-sm text-zinc-500 transition-colors hover:text-white"
-                >
-                  Admin Login
-                </Link>
-              </li>
-            </ul>
-          </div>
+            <div className="mt-4 flex flex-wrap items-baseline gap-x-8 gap-y-2 font-mono text-[10px] md:text-xs uppercase tracking-widest text-background/60">
+              <span>Tyres &amp; Wheels</span>
+              <span>·</span>
+              <span>Kelowna, BC</span>
+              <span>·</span>
+              <span>Est. 2014</span>
+              <span>·</span>
+              <span>Vol. XII — MMXXVI</span>
+            </div>
+          </Link>
         </div>
       </div>
 
-      <div className="border-t border-white/10">
-        <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
-          <div className="flex flex-col items-center justify-between gap-4 sm:flex-row">
-            <p className="text-sm text-zinc-500">
-              &copy; {new Date().getFullYear()} Formula 19 Tyres. All rights
-              reserved.
-            </p>
-            <div className="flex items-center gap-3">
-              <a
-                href="https://facebook.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="rounded-lg p-2 text-zinc-400 transition-colors hover:bg-white/10 hover:text-white"
-                aria-label="Facebook"
-              >
-                <Facebook className="h-5 w-5" />
+      {/* Columns */}
+      <div className="mx-auto max-w-[1600px] px-6 md:px-10 py-16 grid grid-cols-2 md:grid-cols-4 gap-y-10 gap-x-6">
+        <div className="col-span-2">
+          <div className="text-[10px] font-mono uppercase tracking-widest text-background/50 mb-4">
+            The Atelier
+          </div>
+          <address className="not-italic font-serif text-xl leading-snug">
+            {addressLine1}
+            <br />
+            {addressLine2}
+          </address>
+          <div className="mt-6 flex flex-col gap-2 text-sm text-background/70">
+            <a href={`tel:+${phone.replace(/\D/g, "")}`} className="hover:text-accent">
+              {phone}
+            </a>
+            <a href={`mailto:${email}`} className="hover:text-accent break-all">
+              {email}
+            </a>
+          </div>
+        </div>
+
+        <div>
+          <div className="text-[10px] font-mono uppercase tracking-widest text-background/50 mb-4">
+            Catalogue
+          </div>
+          <ul className="space-y-3 text-sm">
+            <li>
+              <a href="#catalogue" className="hover:text-accent">
+                Performance tyres
               </a>
-              <a
-                href="https://instagram.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="rounded-lg p-2 text-zinc-400 transition-colors hover:bg-white/10 hover:text-white"
-                aria-label="Instagram"
-              >
-                <Instagram className="h-5 w-5" />
+            </li>
+            <li>
+              <a href="#catalogue" className="hover:text-accent">
+                Alloy wheels
               </a>
-            </div>
+            </li>
+            <li>
+              <a href="#catalogue" className="hover:text-accent">
+                Winter range
+              </a>
+            </li>
+            <li>
+              <a href="#catalogue" className="hover:text-accent">
+                Off-road
+              </a>
+            </li>
+          </ul>
+        </div>
+
+        <div>
+          <div className="text-[10px] font-mono uppercase tracking-widest text-background/50 mb-4">
+            The House
+          </div>
+          <ul className="space-y-3 text-sm">
+            <li>
+              <a href="#atelier" className="hover:text-accent">
+                About
+              </a>
+            </li>
+            <li>
+              <a href="#archive" className="hover:text-accent">
+                Archive
+              </a>
+            </li>
+            <li>
+              <a href="#enquiries" className="hover:text-accent">
+                Enquiries
+              </a>
+            </li>
+            <li>
+              <Link href="/admin/login" className="text-background/50 hover:text-accent">
+                Staff entrance
+              </Link>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      {/* Colophon */}
+      <div className="border-t border-background/10">
+        <div className="mx-auto max-w-[1600px] px-6 md:px-10 py-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 text-[10px] font-mono uppercase tracking-widest text-background/50">
+          <p>© {new Date().getFullYear()} Formula 19 Tyres. All rights reserved.</p>
+          <div className="flex items-center gap-2">
+            <span>Follow</span>
+            <a
+              href="https://facebook.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Facebook"
+              className="hover:text-accent"
+            >
+              <Facebook className="h-4 w-4" />
+            </a>
+            <a
+              href="https://instagram.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Instagram"
+              className="hover:text-accent"
+            >
+              <Instagram className="h-4 w-4" />
+            </a>
           </div>
         </div>
       </div>

@@ -1,154 +1,134 @@
 "use client"
 
-import { useState, useEffect } from "react"
-import { motion, AnimatePresence } from "framer-motion"
-import { Menu, X, Phone, MessageCircle } from "lucide-react"
+import { useEffect, useState } from "react"
 import Link from "next/link"
+import { Menu, X } from "lucide-react"
 
-interface NavbarProps {
+type Props = {
   content: Record<string, string>
 }
 
-const navLinks = [
-  { name: "Home", href: "#home" },
-  { name: "Products", href: "#products" },
-  { name: "About", href: "#about" },
-  { name: "Gallery", href: "#gallery" },
-  { name: "FAQ", href: "#faq" },
-  { name: "Contact", href: "#contact" },
+const links = [
+  { label: "Index", href: "#top", number: "01" },
+  { label: "Catalogue", href: "#catalogue", number: "02" },
+  { label: "Atelier", href: "#atelier", number: "03" },
+  { label: "Archive", href: "#archive", number: "04" },
+  { label: "Enquiries", href: "#enquiries", number: "05" },
 ]
 
-export function Navbar({ content }: NavbarProps) {
-  const [isOpen, setIsOpen] = useState(false)
+export function Navbar({ content }: Props) {
+  const [open, setOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
 
-  const phone = content.contact_phone || "778-999-8473"
-  const whatsapp = content.whatsapp_number || "17789998473"
-
   useEffect(() => {
-    const handleScroll = () => setScrolled(window.scrollY > 50)
-    window.addEventListener("scroll", handleScroll)
-    return () => window.removeEventListener("scroll", handleScroll)
+    const onScroll = () => setScrolled(window.scrollY > 20)
+    onScroll()
+    window.addEventListener("scroll", onScroll, { passive: true })
+    return () => window.removeEventListener("scroll", onScroll)
   }, [])
-
-  const handleNavClick = (href: string) => {
-    setIsOpen(false)
-    document.querySelector(href)?.scrollIntoView({ behavior: "smooth" })
-  }
 
   return (
     <>
-      <motion.nav
-        initial={{ y: -100 }}
-        animate={{ y: 0 }}
-        transition={{ duration: 0.6, ease: "easeOut" }}
-        className={`fixed left-0 right-0 top-0 z-50 transition-all duration-300 ${
-          scrolled
-            ? "border-b border-white/5 bg-black/90 py-4 backdrop-blur-lg"
-            : "bg-transparent py-6"
+      <header
+        id="top"
+        className={`fixed top-0 inset-x-0 z-40 transition-all duration-500 ${
+          scrolled ? "bg-background/85 backdrop-blur-md border-b border-border" : "bg-transparent"
         }`}
       >
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between">
-            <Link href="#home" className="flex items-center gap-3">
-              <span className="font-heading text-2xl tracking-wide sm:text-3xl">
-                <span className="text-white">FORMULA</span>
-                <span className="text-red-500">19</span>
-              </span>
-              <span className="hidden text-xs uppercase tracking-widest text-zinc-500 sm:block">
-                Tyres
-              </span>
-            </Link>
+        <div className="mx-auto max-w-[1600px] px-6 md:px-10 h-16 md:h-20 flex items-center justify-between">
+          <Link href="#top" className="flex items-baseline gap-2 group">
+            <span className="font-serif text-2xl md:text-3xl tracking-tight">Formula</span>
+            <span className="font-mono text-xs md:text-sm tracking-widest text-accent">/19</span>
+          </Link>
 
-            <div className="hidden items-center gap-8 lg:flex">
-              {navLinks.map((link) => (
-                <button
-                  key={link.name}
-                  onClick={() => handleNavClick(link.href)}
-                  className="text-sm font-medium text-zinc-400 transition-colors hover:text-white"
-                >
-                  {link.name}
-                </button>
-              ))}
-            </div>
-
-            <div className="hidden items-center gap-4 lg:flex">
+          <nav className="hidden md:flex items-center gap-10">
+            {links.slice(1).map((l) => (
               <a
-                href={`tel:+${phone.replace(/\D/g, "")}`}
-                className="flex items-center gap-2 text-sm text-zinc-400 transition-colors hover:text-white"
+                key={l.href}
+                href={l.href}
+                className="group flex items-baseline gap-1.5 text-sm font-medium hover:text-accent transition-colors"
               >
-                <Phone className="h-4 w-4" />
-                <span>{phone}</span>
+                <span className="font-mono text-[10px] text-muted-foreground group-hover:text-accent">
+                  {l.number}
+                </span>
+                <span>{l.label}</span>
               </a>
-              <a
-                href={`https://wa.me/${whatsapp}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center gap-2 rounded-lg bg-red-600 px-5 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-red-700"
-              >
-                <MessageCircle className="h-4 w-4" />
-                WhatsApp
-              </a>
-            </div>
+            ))}
+          </nav>
 
-            <button
-              onClick={() => setIsOpen(!isOpen)}
-              className="p-2 text-white lg:hidden"
-              aria-label="Toggle menu"
+          <div className="hidden md:flex items-center gap-4">
+            <a
+              href={`tel:${content.contact_phone || "778-999-8473"}`}
+              className="font-mono text-xs tracking-wider text-muted-foreground hover:text-foreground"
             >
-              {isOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
-            </button>
+              {content.contact_phone || "778-999-8473"}
+            </a>
+            <a
+              href="#enquiries"
+              className="inline-flex items-center gap-2 bg-foreground text-background px-5 py-2.5 text-xs font-mono uppercase tracking-widest hover:bg-accent transition-colors"
+            >
+              Book a fitting
+              <span aria-hidden>→</span>
+            </a>
           </div>
-        </div>
-      </motion.nav>
 
-      <AnimatePresence>
-        {isOpen && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.2 }}
-            className="fixed inset-0 z-40 bg-black lg:hidden"
+          <button
+            type="button"
+            className="md:hidden inline-flex items-center justify-center w-10 h-10 -mr-2"
+            onClick={() => setOpen(true)}
+            aria-label="Open menu"
           >
-            <div className="px-6 pt-24">
-              <div className="flex flex-col gap-2">
-                {navLinks.map((link, index) => (
-                  <motion.button
-                    key={link.name}
-                    initial={{ opacity: 0, x: -20 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: index * 0.1 }}
-                    onClick={() => handleNavClick(link.href)}
-                    className="border-b border-white/10 py-4 text-left text-2xl font-medium text-white"
-                  >
-                    {link.name}
-                  </motion.button>
-                ))}
-              </div>
+            <Menu className="h-6 w-6" />
+          </button>
+        </div>
+      </header>
 
-              <div className="mt-8 flex flex-col gap-4">
-                <a
-                  href={`tel:+${phone.replace(/\D/g, "")}`}
-                  className="flex items-center gap-3 text-lg text-zinc-400"
-                >
-                  <Phone className="h-5 w-5" />
-                  {phone}
-                </a>
-                <a
-                  href={`https://wa.me/${whatsapp}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center justify-center gap-2 rounded-lg bg-red-600 px-6 py-4 font-semibold text-white"
-                >
-                  <MessageCircle className="h-5 w-5" />
-                  WhatsApp Us
-                </a>
-              </div>
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+      {/* Mobile menu */}
+      <div
+        className={`fixed inset-0 z-50 bg-foreground text-background transition-transform duration-500 md:hidden ${
+          open ? "translate-y-0" : "-translate-y-full"
+        }`}
+      >
+        <div className="flex items-center justify-between px-6 h-16">
+          <Link
+            href="#top"
+            onClick={() => setOpen(false)}
+            className="flex items-baseline gap-2"
+          >
+            <span className="font-serif text-2xl">Formula</span>
+            <span className="font-mono text-xs text-accent">/19</span>
+          </Link>
+          <button
+            type="button"
+            onClick={() => setOpen(false)}
+            className="inline-flex items-center justify-center w-10 h-10 -mr-2"
+            aria-label="Close menu"
+          >
+            <X className="h-6 w-6" />
+          </button>
+        </div>
+        <nav className="px-6 pt-10 flex flex-col gap-2">
+          {links.map((l) => (
+            <a
+              key={l.href}
+              href={l.href}
+              onClick={() => setOpen(false)}
+              className="flex items-baseline justify-between border-b border-background/20 py-5"
+            >
+              <span className="font-serif text-4xl">{l.label}</span>
+              <span className="font-mono text-xs text-background/50">{l.number}</span>
+            </a>
+          ))}
+        </nav>
+        <div className="px-6 mt-10 flex flex-col gap-2 font-mono text-xs tracking-wider text-background/70">
+          <a href={`tel:${content.contact_phone || "778-999-8473"}`}>
+            {content.contact_phone || "778-999-8473"}
+          </a>
+          <a href={`mailto:${content.contact_email || "formula19tires@gmail.com"}`}>
+            {content.contact_email || "formula19tires@gmail.com"}
+          </a>
+        </div>
+      </div>
     </>
   )
 }

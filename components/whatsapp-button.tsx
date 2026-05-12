@@ -1,28 +1,20 @@
-"use client"
-
-import { motion } from "framer-motion"
 import { MessageCircle } from "lucide-react"
 
-interface WhatsAppButtonProps {
+type Props = {
   phone: string
 }
 
-export function WhatsAppButton({ phone }: WhatsAppButtonProps) {
+export function WhatsAppButton({ phone }: Props) {
   return (
-    <motion.a
+    <a
       href={`https://wa.me/${phone}`}
       target="_blank"
       rel="noopener noreferrer"
-      initial={{ scale: 0, opacity: 0 }}
-      animate={{ scale: 1, opacity: 1 }}
-      transition={{ delay: 1, type: "spring", stiffness: 200 }}
-      whileHover={{ scale: 1.1 }}
-      whileTap={{ scale: 0.95 }}
-      className="fixed bottom-6 right-6 z-50 flex h-14 w-14 items-center justify-center rounded-full bg-green-500 text-white shadow-lg shadow-green-500/30 transition-colors hover:bg-green-600"
       aria-label="Chat on WhatsApp"
+      className="fixed bottom-6 right-6 z-30 inline-flex items-center gap-2 bg-foreground text-background px-5 py-3 font-mono text-xs uppercase tracking-widest hover:bg-accent transition-colors shadow-lg"
     >
-      <MessageCircle className="h-7 w-7" />
-      <span className="absolute inset-0 animate-ping rounded-full bg-green-500 opacity-25" />
-    </motion.a>
+      <MessageCircle className="h-4 w-4" />
+      WhatsApp
+    </a>
   )
 }

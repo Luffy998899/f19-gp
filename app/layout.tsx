@@ -1,30 +1,37 @@
-import type { Metadata } from 'next'
-import { Inter, Bebas_Neue } from 'next/font/google'
-import { Analytics } from '@vercel/analytics/next'
-import './globals.css'
+import type { Metadata } from "next"
+import { Inter, Fraunces, JetBrains_Mono } from "next/font/google"
+import { Analytics } from "@vercel/analytics/next"
+import "./globals.css"
 
-const inter = Inter({ 
+const inter = Inter({
   subsets: ["latin"],
-  variable: '--font-inter',
-  display: 'swap',
+  variable: "--font-inter",
+  display: "swap",
 })
 
-const bebasNeue = Bebas_Neue({ 
-  weight: '400',
+const fraunces = Fraunces({
   subsets: ["latin"],
-  variable: '--font-bebas',
-  display: 'swap',
+  variable: "--font-fraunces",
+  display: "swap",
+  axes: ["opsz", "SOFT"],
+})
+
+const jetbrains = JetBrains_Mono({
+  subsets: ["latin"],
+  variable: "--font-jetbrains",
+  display: "swap",
 })
 
 export const metadata: Metadata = {
-  title: 'Formula 19 Tyres | Precision. Performance. Power.',
-  description: 'Premium performance tyres and alloy wheels in Kelowna, BC. Experience precision engineering, lightweight performance, and track-tested durability. All about tyres.',
-  keywords: ['tyres', 'wheels', 'alloy wheels', 'performance tyres', 'premium wheels', 'Formula 19', 'Kelowna', 'BC', 'tires'],
-  authors: [{ name: 'Formula 19 Tyres' }],
+  title: "Formula 19 — Tyres & Wheels of Distinction. Kelowna, BC.",
+  description:
+    "An independent atelier for premium tyres, alloy wheels, and precision installation. Serving Kelowna and the Okanagan since 2014.",
+  keywords: ["tyres", "wheels", "alloy wheels", "performance", "Formula 19", "Kelowna", "BC", "tires"],
+  authors: [{ name: "Formula 19" }],
   openGraph: {
-    title: 'Formula 19 Tyres | Precision. Performance. Power.',
-    description: 'Premium performance tyres and alloy wheels for the ultimate driving experience.',
-    type: 'website',
+    title: "Formula 19 — Tyres & Wheels of Distinction",
+    description: "Premium tyres and wheels for the Okanagan.",
+    type: "website",
   },
 }
 
@@ -34,10 +41,13 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="en" className={`${inter.variable} ${bebasNeue.variable} bg-background`}>
+    <html
+      lang="en"
+      className={`${inter.variable} ${fraunces.variable} ${jetbrains.variable} bg-background`}
+    >
       <body className="font-sans antialiased bg-background text-foreground overflow-x-hidden">
         {children}
-        {process.env.NODE_ENV === 'production' && <Analytics />}
+        {process.env.NODE_ENV === "production" && <Analytics />}
       </body>
     </html>
   )
