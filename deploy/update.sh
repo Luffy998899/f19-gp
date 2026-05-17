@@ -46,9 +46,10 @@ if [[ ! -f "$PROJECT_DIR/.env.local" ]]; then
   exit 1
 fi
 
-if ! systemctl list-unit-files | grep -q "^${SERVICE_NAME}.service"; then
+if ! systemctl cat "${SERVICE_NAME}.service" >/dev/null 2>&1; then
   echo "ERROR: systemd service '${SERVICE_NAME}' not found."
-  echo "Run 'sudo bash deploy/deploy.sh' first."
+  echo "Run 'sudo bash deploy/deploy.sh' first, or pass --service <name> if it"
+  echo "was installed under a different name."
   exit 1
 fi
 
