@@ -51,7 +51,7 @@ export function AboutSection({ content }: AboutSectionProps) {
             </div>
 
             <h2 className="font-display text-foreground uppercase text-[clamp(2.5rem,6vw,5rem)] leading-[0.9] mb-8">
-              {content.about_title || "Built by drivers,"}
+              {content.about_title || "Engineering Excellence"}
               <br />
               <span className="text-primary">for drivers.</span>
             </h2>
@@ -59,11 +59,11 @@ export function AboutSection({ content }: AboutSectionProps) {
             <div className="space-y-4 text-base text-muted-foreground leading-relaxed max-w-xl mb-10">
               <p>
                 {content.about_description ||
-                  "For over a decade, Formula 19 has been Kelowna's trusted source for premium tires, wheels, and expert installation."}
+                  "Formula 19 delivers premium tire and wheel services with precision, expertise, and honest craftsmanship."}
               </p>
               <p>
-                Every set leaves our shop hand-balanced, torqued to spec, and road-tested.
-                No shortcuts. No surprises. Just honest work — the kind your car deserves.
+                Tagged by the community as Kelowna's trusted automotive specialists.
+                We balance speed with quality — every job done right, first time.
               </p>
             </div>
 

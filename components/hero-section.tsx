@@ -83,7 +83,7 @@ export function HeroSection({ content }: HeroSectionProps) {
               <span className="block mt-2">
                 Sale{" "}
                 <span className="inline-block bg-primary text-primary-foreground px-3 py-0.5 tracking-wider">
-                  Up to 75% Off
+                  Up to 10% Off
                 </span>
               </span>
             </h1>
@@ -106,23 +106,7 @@ export function HeroSection({ content }: HeroSectionProps) {
               </Link>
             </div>
 
-            {/* Mini stats */}
-            <div className="mt-10 grid grid-cols-3 gap-px bg-border max-w-lg">
-              {[
-                { value: "15+", label: "Years" },
-                { value: "200+", label: "Brands" },
-                { value: "4.9", label: "Rating" },
-              ].map((s) => (
-                <div key={s.label} className="bg-background/70 backdrop-blur px-4 py-4">
-                  <div className="font-display text-foreground text-2xl lg:text-3xl num-badge leading-none">
-                    {s.value}
-                  </div>
-                  <div className="mt-1 font-mono text-[10px] uppercase tracking-[0.2em] text-muted-foreground">
-                    {s.label}
-                  </div>
-                </div>
-              ))}
-            </div>
+            {/* Stats removed per content update */}
           </div>
 
           {/* Right column kept empty so the background car shines through */}
