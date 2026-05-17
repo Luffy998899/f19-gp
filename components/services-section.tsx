@@ -1,4 +1,4 @@
-import { Disc3, Gauge, Wrench, Snowflake, Cog, ShieldCheck } from "lucide-react"
+import { Disc3, Wrench, Snowflake, Cog, ShieldCheck } from "lucide-react"
 
 const services = [
   {
@@ -10,10 +10,10 @@ const services = [
   },
   {
     num: "02",
-    icon: Gauge,
-    title: "Wheel Alignment",
+    icon: Wrench,
+    title: "Tire Installation",
     description:
-      "Precision 4-wheel alignment using state-of-the-art Hunter equipment. Extends tire life and improves handling.",
+      "Professional tire installation with hand-balanced wheels and proper torque specs. Same-day service on stocked sizes.",
   },
   {
     num: "03",
