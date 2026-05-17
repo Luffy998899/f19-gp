@@ -1,5 +1,5 @@
 import Image from "next/image"
-import { ArrowUpRight, Award, Users, Clock, Shield } from "lucide-react"
+import { ArrowUpRight, Award, Clock } from "lucide-react"
 
 interface AboutSectionProps {
   content: Record<string, string>
@@ -8,8 +8,6 @@ interface AboutSectionProps {
 const values = [
   { icon: Award, label: "Certified Techs", detail: "Factory-trained installers" },
   { icon: Clock, label: "Same-Day Service", detail: "On stocked sizes" },
-  { icon: Shield, label: "Workmanship Warranty", detail: "12 months on every job" },
-  { icon: Users, label: "Family Owned", detail: "Locally operated since 2014" },
 ]
 
 export function AboutSection({ content }: AboutSectionProps) {

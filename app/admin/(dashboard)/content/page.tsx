@@ -5,6 +5,17 @@ export const dynamic = "force-dynamic"
 
 const FIELD_GROUPS = [
   {
+    title: "Branding",
+    description: "Site icon shown in browser tabs and bookmarks",
+    fields: [
+      {
+        key: "site_favicon_url",
+        label:
+          "Favicon URL (square PNG/SVG/ICO, recommended 512x512). Paste a hosted image URL.",
+      },
+    ],
+  },
+  {
     title: "Hero Section",
     description: "Top of the homepage",
     fields: [
