@@ -81,7 +81,9 @@ fi
 
 echo
 echo "[3/4] Building the app..."
-sudo -u "$APP_USER" bash -lc "cd '$PROJECT_DIR' && pnpm build"
+# Always wipe the previous .next so stale prerendered pages (e.g. cached 404s)
+# never carry over into the new build.
+sudo -u "$APP_USER" bash -lc "cd '$PROJECT_DIR' && rm -rf .next && pnpm build"
 
 echo
 echo "[4/4] Restarting service..."

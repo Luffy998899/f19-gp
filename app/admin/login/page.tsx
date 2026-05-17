@@ -4,6 +4,8 @@ import { redirect } from "next/navigation"
 import { adminExists } from "@/app/actions/setup"
 
 export const dynamic = "force-dynamic"
+export const revalidate = 0
+export const fetchCache = "force-no-store"
 
 export const metadata = {
   title: "Admin Login | Formula 19 Tyres",
