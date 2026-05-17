@@ -25,7 +25,7 @@ export function Footer({ content }: FooterProps) {
               <span className="w-1 h-1 bg-primary" />
               <span>Kelowna, BC</span>
               <span className="w-1 h-1 bg-primary" />
-              <span>Est. 2014</span>
+              <span>Est. 2026</span>
               <span className="w-1 h-1 bg-primary" />
               <span>N° 0719</span>
             </div>
@@ -39,7 +39,7 @@ export function Footer({ content }: FooterProps) {
           <div className="font-mono text-[10px] uppercase tracking-widest text-primary mb-4">
             / The Garage
           </div>
-          <address className="not-italic font-display text-xl uppercase tracking-tight text-foreground leading-tight">
+          <address className="not-italic font-display text-xl uppercase tracking-wide text-foreground leading-[1.4]">
             {addressLine1}
             <br />
             {addressLine2}

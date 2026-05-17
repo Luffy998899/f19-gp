@@ -24,7 +24,7 @@ export function FAQSection({ faqs }: FAQSectionProps) {
               </span>
               <span className="w-12 h-px bg-primary" />
             </div>
-            <h2 className="font-display text-foreground uppercase text-[clamp(2.5rem,6vw,5rem)] leading-[0.9] mb-6">
+            <h2 className="font-display text-foreground uppercase text-[clamp(2.5rem,6vw,5rem)] leading-[1.05] tracking-wide mb-6">
               Quick
               <br />
               <span className="text-primary">answers.</span>
