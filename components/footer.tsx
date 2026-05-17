@@ -39,10 +39,9 @@ export function Footer({ content }: FooterProps) {
           <div className="font-mono text-[10px] uppercase tracking-widest text-primary mb-4">
             / The Garage
           </div>
-          <address className="not-italic font-display text-xl uppercase tracking-wide text-foreground leading-[1.4]">
-            {addressLine1}
-            <br />
-            {addressLine2}
+          <address className="not-italic font-display text-xl uppercase tracking-[0.05em] text-foreground space-y-2">
+            <div>{addressLine1}</div>
+            <div>{addressLine2}</div>
           </address>
           <div className="mt-6 space-y-3 text-sm">
             <a
