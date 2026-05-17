@@ -27,8 +27,15 @@ export async function updateSession(request: NextRequest) {
     data: { user },
   } = await supabase.auth.getUser()
 
+  const path = request.nextUrl.pathname
+
+  // Allow the public /setup route through unconditionally.
+  if (path.startsWith("/setup")) {
+    return supabaseResponse
+  }
+
   // Protect admin routes
-  if (request.nextUrl.pathname.startsWith("/admin") && !request.nextUrl.pathname.startsWith("/admin/login")) {
+  if (path.startsWith("/admin") && !path.startsWith("/admin/login")) {
     if (!user) {
       const url = request.nextUrl.clone()
       url.pathname = "/admin/login"
