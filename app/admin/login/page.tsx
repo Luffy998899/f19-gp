@@ -11,8 +11,16 @@ export const metadata = {
 
 export default async function AdminLoginPage() {
   // If no admin exists yet, send the user to first-time setup.
-  if (!(await adminExists())) {
-    redirect("/setup")
+  // Wrap in try/catch so transient Supabase issues don't render a confusing 404.
+  try {
+    if (!(await adminExists())) {
+      redirect("/setup")
+    }
+  } catch (err) {
+    if ((err as { digest?: string })?.digest?.startsWith?.("NEXT_REDIRECT")) {
+      throw err
+    }
+    console.error("[v0] adminExists check failed:", err)
   }
 
   return (
