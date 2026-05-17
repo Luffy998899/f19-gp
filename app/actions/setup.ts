@@ -16,7 +16,7 @@ function isValidEmail(email: string) {
  * Safe to call from server components / actions.
  */
 export async function adminExists(): Promise<boolean> {
-  const url = process.env.NEXT_PUBLIC_SUPABASE_URL
+  const url = process.env.NEXT_PUBLIC_SUPABASE_URL || process.env.SUPABASE_URL
   const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY
   if (!url || !serviceKey) return false
 
@@ -54,12 +54,13 @@ export async function createFirstAdmin(
   if (password !== confirmPassword)
     return { error: "Passwords do not match." }
 
-  const url = process.env.NEXT_PUBLIC_SUPABASE_URL
+  const url = process.env.NEXT_PUBLIC_SUPABASE_URL || process.env.SUPABASE_URL
+  const anonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || process.env.SUPABASE_ANON_KEY
   const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY
-  if (!url || !serviceKey)
+  if (!url || !serviceKey || !anonKey)
     return {
       error:
-        "Supabase environment variables are missing. Set NEXT_PUBLIC_SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY before running setup.",
+        "Supabase environment variables are missing. Set NEXT_PUBLIC_SUPABASE_URL, NEXT_PUBLIC_SUPABASE_ANON_KEY, and SUPABASE_SERVICE_ROLE_KEY before running setup.",
     }
 
   // Refuse if an admin already exists.
@@ -96,7 +97,7 @@ export async function createFirstAdmin(
   const cookieStore = await cookies()
   const supabase = createServerClient(
     url,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+    anonKey,
     {
       cookies: {
         getAll() {
