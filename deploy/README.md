@@ -62,12 +62,37 @@ sudo certbot renew --dry-run            # test SSL renewal
 sudo nginx -t && sudo systemctl reload nginx
 ```
 
-## Updating the site
+## Updating the site (no prompts, no SSL changes)
+
+After the first successful `deploy.sh` run, use the dedicated update script.
+It pulls the latest code, reinstalls deps, rebuilds, and restarts the service.
+It will NOT prompt for credentials and will NOT touch Nginx or SSL.
 
 ```bash
-cd /path/to/project
-git pull
-pnpm install
-pnpm build
-sudo systemctl restart formula19
+sudo bash deploy/update.sh
+```
+
+Flags:
+
+```bash
+sudo bash deploy/update.sh --no-pull        # skip git pull (use uploaded files)
+sudo bash deploy/update.sh --no-install     # skip pnpm install (build only)
+sudo bash deploy/update.sh --service myapp  # custom systemd service name
+```
+
+## Re-running deploy.sh
+
+`deploy.sh` saves your answers to `/etc/formula19/deploy.conf` (root-only,
+0600). Re-running it will reuse those values; press Enter at any prompt to
+keep the saved value, or type a new one to override. Delete the file to
+start fresh:
+
+```bash
+sudo rm /etc/formula19/deploy.conf
+```
+
+## Manual one-liner
+
+```bash
+cd /path/to/project && sudo bash deploy/update.sh
 ```
