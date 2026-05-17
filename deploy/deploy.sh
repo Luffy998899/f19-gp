@@ -34,23 +34,68 @@ echo " Formula 19 — Ubuntu 22.04 deployment"
 echo "============================================================"
 
 # ---- 1. Prompts ------------------------------------------------------------
-read -rp "Site domain (e.g. example.com, no http://): " DOMAIN
-[[ -z "$DOMAIN" ]] && { echo "Domain is required."; exit 1; }
+# Allow re-running non-interactively by reading saved values from
+# /etc/formula19/deploy.conf (created on first successful run).
+CONF_DIR="/etc/formula19"
+CONF_FILE="$CONF_DIR/deploy.conf"
+if [[ -f "$CONF_FILE" ]]; then
+  echo "Found existing config at $CONF_FILE — reusing saved values."
+  echo "Delete that file to re-prompt, or run deploy/update.sh for code-only updates."
+  # shellcheck disable=SC1090
+  source "$CONF_FILE"
+fi
 
-read -rp "Also include www.${DOMAIN}? [Y/n]: " INCLUDE_WWW
+prompt_default() {
+  # prompt_default <var-name> <prompt-text> [hidden]
+  local __var="$1" __msg="$2" __hidden="${3:-}"
+  local __cur="${!__var:-}"
+  local __input=""
+  if [[ -n "$__cur" ]]; then
+    if [[ "$__hidden" == "hidden" ]]; then
+      read -rp "$__msg [keep existing] (leave empty to keep): " __input || true
+    else
+      read -rp "$__msg [$__cur]: " __input || true
+    fi
+    [[ -n "$__input" ]] && printf -v "$__var" '%s' "$__input"
+  else
+    if [[ "$__hidden" == "hidden" ]]; then
+      read -rsp "$__msg: " __input
+      echo
+    else
+      read -rp "$__msg: " __input
+    fi
+    printf -v "$__var" '%s' "$__input"
+  fi
+}
+
+prompt_default DOMAIN "Site domain (e.g. example.com, no http://)"
+[[ -z "${DOMAIN:-}" ]] && { echo "Domain is required."; exit 1; }
+
+prompt_default INCLUDE_WWW "Also include www.${DOMAIN}? [Y/n]"
 INCLUDE_WWW="${INCLUDE_WWW:-Y}"
 
-read -rp "Email for Let's Encrypt notifications: " LE_EMAIL
-[[ -z "$LE_EMAIL" ]] && { echo "Email is required."; exit 1; }
+prompt_default LE_EMAIL "Email for Let's Encrypt notifications"
+[[ -z "${LE_EMAIL:-}" ]] && { echo "Email is required."; exit 1; }
 
 echo
 echo "Supabase credentials (from your Supabase project Settings -> API):"
-read -rp "  NEXT_PUBLIC_SUPABASE_URL: " SUPABASE_URL
-read -rp "  NEXT_PUBLIC_SUPABASE_ANON_KEY: " SUPABASE_ANON
-read -rsp "  SUPABASE_SERVICE_ROLE_KEY (input hidden): " SUPABASE_SERVICE
-echo
-[[ -z "$SUPABASE_URL" || -z "$SUPABASE_ANON" || -z "$SUPABASE_SERVICE" ]] && {
+prompt_default SUPABASE_URL "  NEXT_PUBLIC_SUPABASE_URL"
+prompt_default SUPABASE_ANON "  NEXT_PUBLIC_SUPABASE_ANON_KEY"
+prompt_default SUPABASE_SERVICE "  SUPABASE_SERVICE_ROLE_KEY (input hidden)" hidden
+[[ -z "${SUPABASE_URL:-}" || -z "${SUPABASE_ANON:-}" || -z "${SUPABASE_SERVICE:-}" ]] && {
   echo "All three Supabase values are required."; exit 1; }
+
+# Save for next run (root-only).
+mkdir -p "$CONF_DIR"
+cat > "$CONF_FILE" <<CONF
+DOMAIN="$DOMAIN"
+INCLUDE_WWW="$INCLUDE_WWW"
+LE_EMAIL="$LE_EMAIL"
+SUPABASE_URL="$SUPABASE_URL"
+SUPABASE_ANON="$SUPABASE_ANON"
+SUPABASE_SERVICE="$SUPABASE_SERVICE"
+CONF
+chmod 600 "$CONF_FILE"
 
 # ---- 2. System packages ----------------------------------------------------
 echo
@@ -92,7 +137,7 @@ chmod 600 "$PROJECT_DIR/.env.local"
 
 echo
 echo "[3/6] Installing dependencies and building the app..."
-sudo -u "$APP_USER" bash -c "cd '$PROJECT_DIR' && pnpm install --frozen-lockfile=false && pnpm build"
+sudo -u "$APP_USER" bash -lc "cd '$PROJECT_DIR' && pnpm install --no-frozen-lockfile && pnpm build"
 
 # ---- 4. systemd service ----------------------------------------------------
 echo
