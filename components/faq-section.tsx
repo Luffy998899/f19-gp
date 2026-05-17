@@ -24,10 +24,9 @@ export function FAQSection({ faqs }: FAQSectionProps) {
               </span>
               <span className="w-12 h-px bg-primary" />
             </div>
-            <h2 className="font-display text-foreground uppercase text-[clamp(2.5rem,6vw,5rem)] leading-[0.9] mb-6">
-              Quick
-              <br />
-              <span className="text-primary">answers.</span>
+            <h2 className="font-display text-foreground uppercase text-[clamp(2.5rem,6vw,5rem)] leading-[1.05] tracking-[0.02em] mb-6 space-y-2">
+              <span className="block">Quick</span>
+              <span className="block text-primary">answers.</span>
             </h2>
             <p className="text-sm text-muted-foreground max-w-sm leading-relaxed">
               Can&apos;t find what you need? Give us a call — we&apos;re happy to talk

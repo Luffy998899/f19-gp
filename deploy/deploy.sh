@@ -137,7 +137,9 @@ chmod 600 "$PROJECT_DIR/.env.local"
 
 echo
 echo "[3/6] Installing dependencies and building the app..."
-sudo -u "$APP_USER" bash -lc "cd '$PROJECT_DIR' && pnpm install --no-frozen-lockfile && pnpm build"
+# Always wipe the previous .next so Next can never serve a stale prerendered
+# page (e.g. a cached 404) from a previous build.
+sudo -u "$APP_USER" bash -lc "cd '$PROJECT_DIR' && rm -rf .next && pnpm install --no-frozen-lockfile && pnpm build"
 
 # ---- 4. systemd service ----------------------------------------------------
 echo
@@ -162,7 +164,9 @@ WantedBy=multi-user.target
 UNIT
 
 systemctl daemon-reload
-systemctl enable --now ${SERVICE_NAME}.service
+systemctl enable ${SERVICE_NAME}.service
+# Always restart so re-runs of deploy.sh pick up the freshly built code.
+systemctl restart ${SERVICE_NAME}.service
 
 # ---- 5. Nginx --------------------------------------------------------------
 echo
