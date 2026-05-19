@@ -2,8 +2,9 @@
 
 import Image from "next/image"
 import { useState } from "react"
-import { ArrowUpRight, Pause, Play } from "lucide-react"
+import { ArrowUpRight, MessageCircle, Pause, Play } from "lucide-react"
 import type { Product } from "@/lib/data"
+import { QuoteModal } from "@/components/quote-modal"
 
 interface ProductsCarouselProps {
   products: Product[]
@@ -11,10 +12,18 @@ interface ProductsCarouselProps {
 
 export function ProductsCarousel({ products }: ProductsCarouselProps) {
   const [paused, setPaused] = useState(false)
+  const [quoteFor, setQuoteFor] = useState<string | null>(null)
+  const [open, setOpen] = useState(false)
+
   if (!products.length) return null
 
   // Duplicate the list so the marquee can loop seamlessly
   const loop = [...products, ...products]
+
+  function openQuote(name: string) {
+    setQuoteFor(name)
+    setOpen(true)
+  }
 
   return (
     <section id="popular" className="relative bg-background py-20 lg:py-28 overflow-hidden border-b border-border">
@@ -85,28 +94,26 @@ export function ProductsCarousel({ products }: ProductsCarouselProps) {
                 <h3 className="font-display uppercase text-foreground text-lg leading-tight line-clamp-2 min-h-[2.6em]">
                   {p.name}
                 </h3>
-                <div className="mt-4 flex items-end justify-between border-t border-border pt-4">
-                  <div>
-                    <div className="font-mono text-[10px] uppercase tracking-widest text-muted-foreground mb-1">
-                      From
-                    </div>
-                    <div className="font-display text-2xl text-foreground num-badge">
-                      ${Number(p.price).toFixed(0)}
-                      <span className="text-xs text-muted-foreground ml-1">CAD</span>
-                    </div>
-                  </div>
-                  <a
-                    href="#contact"
-                    className="font-mono text-[10px] uppercase tracking-widest text-foreground hover:text-primary inline-flex items-center gap-1"
+                <div className="mt-4 border-t border-border pt-4">
+                  <button
+                    type="button"
+                    onClick={() => openQuote(p.name)}
+                    className="w-full inline-flex items-center justify-center gap-2 bg-primary text-primary-foreground px-3 py-2.5 font-mono text-[10px] uppercase tracking-widest hover:bg-foreground hover:text-background transition-colors"
                   >
-                    Shop <ArrowUpRight className="w-3 h-3" />
-                  </a>
+                    <MessageCircle className="w-3.5 h-3.5" /> DM us for the quote
+                  </button>
                 </div>
               </div>
             </article>
           ))}
         </div>
       </div>
+
+      <QuoteModal
+        open={open}
+        productName={quoteFor}
+        onClose={() => setOpen(false)}
+      />
     </section>
   )
 }

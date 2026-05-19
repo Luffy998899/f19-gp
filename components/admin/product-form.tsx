@@ -57,28 +57,15 @@ export function ProductForm({ product, action }: ProductFormProps) {
                 />
               </Field>
 
-              <div className="grid grid-cols-2 gap-4">
-                <Field label="Category" required>
-                  <input
-                    name="category"
-                    required
-                    defaultValue={product?.category}
-                    className="input"
-                    placeholder="Performance"
-                  />
-                </Field>
-                <Field label="Price (CAD)" required>
-                  <input
-                    name="price"
-                    type="number"
-                    step="0.01"
-                    required
-                    defaultValue={product?.price}
-                    className="input"
-                    placeholder="899.00"
-                  />
-                </Field>
-              </div>
+              <Field label="Category" required>
+                <input
+                  name="category"
+                  required
+                  defaultValue={product?.category}
+                  className="input"
+                  placeholder="Performance"
+                />
+              </Field>
 
               <Field label="Description">
                 <textarea

@@ -1,12 +1,24 @@
+"use client"
+
 import Image from "next/image"
-import { ArrowUpRight, Star } from "lucide-react"
+import { useState } from "react"
+import { ArrowUpRight, MessageCircle, Star } from "lucide-react"
 import type { Product } from "@/lib/data"
+import { QuoteModal } from "@/components/quote-modal"
 
 interface ProductsSectionProps {
   products: Product[]
 }
 
 export function ProductsSection({ products }: ProductsSectionProps) {
+  const [quoteFor, setQuoteFor] = useState<string | null>(null)
+  const [open, setOpen] = useState(false)
+
+  function openQuote(name?: string | null) {
+    setQuoteFor(name ?? null)
+    setOpen(true)
+  }
+
   if (!products.length) return null
 
   return (
@@ -29,12 +41,13 @@ export function ProductsSection({ products }: ProductsSectionProps) {
           </div>
           <div className="flex items-center gap-6 text-sm font-mono uppercase tracking-widest text-muted-foreground">
             <span>{String(products.length).padStart(2, "0")} Products</span>
-            <a
-              href="#contact"
+            <button
+              type="button"
+              onClick={() => openQuote(null)}
               className="flex items-center gap-2 text-foreground hover:text-primary underline-grow"
             >
               Request quote <ArrowUpRight className="w-4 h-4" />
-            </a>
+            </button>
           </div>
         </div>
 
@@ -59,7 +72,7 @@ export function ProductsSection({ products }: ProductsSectionProps) {
                 {/* Top tag row */}
                 <div className="absolute top-0 left-0 right-0 flex items-center justify-between p-4">
                   <span className="font-mono text-[10px] uppercase tracking-widest text-foreground bg-background/80 backdrop-blur px-2 py-1">
-                    N° {String(i + 1).padStart(2, "0")}
+                    N {String(i + 1).padStart(2, "0")}
                   </span>
                   {p.is_featured && (
                     <span className="font-mono text-[10px] uppercase tracking-widest bg-primary text-primary-foreground px-2 py-1">
@@ -77,7 +90,7 @@ export function ProductsSection({ products }: ProductsSectionProps) {
               <div className="p-6 border-t border-border">
                 <div className="flex items-center justify-between mb-3 font-mono text-[10px] uppercase tracking-widest text-muted-foreground">
                   <span>{p.category}</span>
-                  <span className="num-badge">{p.size || p.width || "—"}</span>
+                  <span className="num-badge">{p.size || p.width || "-"}</span>
                 </div>
                 <h3 className="font-display text-2xl uppercase tracking-tight text-foreground mb-2">
                   {p.name}
@@ -96,30 +109,20 @@ export function ProductsSection({ products }: ProductsSectionProps) {
                 </div>
 
                 {/* Footer */}
-                <div className="flex items-end justify-between pt-4 border-t border-border">
-                  <div>
-                    <div className="font-mono text-[10px] uppercase tracking-widest text-muted-foreground mb-1">
-                      From
-                    </div>
-                    <div className="font-display text-2xl text-foreground num-badge">
-                      ${Number(p.price).toFixed(0)}
-                      <span className="text-xs text-muted-foreground ml-1">CAD</span>
-                    </div>
-                  </div>
-                  <div className="flex flex-col items-end gap-2">
-                    <div className="flex items-center gap-1 text-xs">
-                      <Star className="w-3 h-3 fill-primary text-primary" />
-                      <span className="font-mono num-badge text-foreground">{p.rating}</span>
-                      <span className="text-muted-foreground font-mono text-[10px]">
-                        ({p.reviews_count})
-                      </span>
-                    </div>
-                    <a
-                      href="#contact"
-                      className="font-mono text-[10px] uppercase tracking-widest text-foreground hover:text-primary flex items-center gap-1"
-                    >
-                      Inquire <ArrowUpRight className="w-3 h-3" />
-                    </a>
+                <div className="flex items-end justify-between gap-4 pt-4 border-t border-border">
+                  <button
+                    type="button"
+                    onClick={() => openQuote(p.name)}
+                    className="inline-flex items-center gap-2 bg-primary text-primary-foreground px-3 py-2 font-mono text-[10px] uppercase tracking-widest hover:bg-foreground hover:text-background transition-colors"
+                  >
+                    <MessageCircle className="w-3.5 h-3.5" /> DM us for the quote
+                  </button>
+                  <div className="flex items-center gap-1 text-xs">
+                    <Star className="w-3 h-3 fill-primary text-primary" />
+                    <span className="font-mono num-badge text-foreground">{p.rating}</span>
+                    <span className="text-muted-foreground font-mono text-[10px]">
+                      ({p.reviews_count})
+                    </span>
                   </div>
                 </div>
               </div>
@@ -127,6 +130,12 @@ export function ProductsSection({ products }: ProductsSectionProps) {
           ))}
         </div>
       </div>
+
+      <QuoteModal
+        open={open}
+        productName={quoteFor}
+        onClose={() => setOpen(false)}
+      />
     </section>
   )
 }
