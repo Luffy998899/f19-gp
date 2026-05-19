@@ -20,7 +20,7 @@ export async function createProduct(formData: FormData) {
   const payload = {
     name: String(formData.get("name")),
     category: String(formData.get("category")),
-    price: Number(formData.get("price") || 0),
+    price: 0,
     description: String(formData.get("description") || "") || null,
     size: String(formData.get("size") || "") || null,
     width: String(formData.get("width") || "") || null,
@@ -44,7 +44,6 @@ export async function updateProduct(id: string, formData: FormData) {
   const payload = {
     name: String(formData.get("name")),
     category: String(formData.get("category")),
-    price: Number(formData.get("price") || 0),
     description: String(formData.get("description") || "") || null,
     size: String(formData.get("size") || "") || null,
     width: String(formData.get("width") || "") || null,
@@ -206,6 +205,53 @@ export async function deleteInquiry(id: string) {
   const { error } = await supabase.from("inquiries").delete().eq("id", id)
   if (error) return { error: error.message }
   revalidatePath("/admin/inquiries")
+  return { success: true }
+}
+
+// ============ SOCIAL LINKS ============
+
+export async function createSocialLink(formData: FormData) {
+  const { supabase } = await requireAdmin()
+  const payload = {
+    platform: String(formData.get("platform") || "").toLowerCase(),
+    label: String(formData.get("label") || "") || null,
+    url: String(formData.get("url") || ""),
+    display_order: Number(formData.get("display_order") || 0),
+    is_active: formData.get("is_active") !== "off",
+  }
+  const { error } = await supabase.from("social_links").insert(payload)
+  if (error) return { error: error.message }
+  revalidatePath("/admin/socials")
+  revalidatePath("/")
+  redirect("/admin/socials")
+}
+
+export async function updateSocialLink(id: string, formData: FormData) {
+  const { supabase } = await requireAdmin()
+  const payload = {
+    platform: String(formData.get("platform") || "").toLowerCase(),
+    label: String(formData.get("label") || "") || null,
+    url: String(formData.get("url") || ""),
+    display_order: Number(formData.get("display_order") || 0),
+    is_active: formData.get("is_active") !== "off",
+    updated_at: new Date().toISOString(),
+  }
+  const { error } = await supabase
+    .from("social_links")
+    .update(payload)
+    .eq("id", id)
+  if (error) return { error: error.message }
+  revalidatePath("/admin/socials")
+  revalidatePath("/")
+  redirect("/admin/socials")
+}
+
+export async function deleteSocialLink(id: string) {
+  const { supabase } = await requireAdmin()
+  const { error } = await supabase.from("social_links").delete().eq("id", id)
+  if (error) return { error: error.message }
+  revalidatePath("/admin/socials")
+  revalidatePath("/")
   return { success: true }
 }
 

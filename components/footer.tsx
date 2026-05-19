@@ -1,11 +1,14 @@
 import Link from "next/link"
-import { Facebook, Instagram, Phone, Mail, MapPin } from "lucide-react"
+import { Phone, Mail, MapPin } from "lucide-react"
+import type { SocialLink } from "@/lib/data"
+import { socialIcon, socialLabel } from "@/lib/social-icons"
 
 interface FooterProps {
   content: Record<string, string>
+  socials?: SocialLink[]
 }
 
-export function Footer({ content }: FooterProps) {
+export function Footer({ content, socials = [] }: FooterProps) {
   const phone = content.contact_phone || "778-999-8473"
   const email = content.contact_email || "formula19tires@gmail.com"
   const addressLine1 = content.contact_address_line1 || "Unit 1, 715 Evans CT"
@@ -27,7 +30,7 @@ export function Footer({ content }: FooterProps) {
               <span className="w-1 h-1 bg-primary" />
               <span>Est. 2026</span>
               <span className="w-1 h-1 bg-primary" />
-              <span>N° 0719</span>
+              <span>N 0719</span>
             </div>
           </Link>
         </div>
@@ -98,29 +101,29 @@ export function Footer({ content }: FooterProps) {
           <p className="font-mono text-[10px] uppercase tracking-widest text-muted-foreground">
             © {new Date().getFullYear()} Formula 19 Tires. Built for the road.
           </p>
-          <div className="flex items-center gap-4">
-            <span className="font-mono text-[10px] uppercase tracking-widest text-muted-foreground">
-              Follow
-            </span>
-            <a
-              href="https://facebook.com"
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label="Facebook"
-              className="text-foreground hover:text-primary"
-            >
-              <Facebook className="w-4 h-4" />
-            </a>
-            <a
-              href="https://instagram.com"
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label="Instagram"
-              className="text-foreground hover:text-primary"
-            >
-              <Instagram className="w-4 h-4" />
-            </a>
-          </div>
+          {socials.length > 0 ? (
+            <div className="flex items-center gap-4 flex-wrap">
+              <span className="font-mono text-[10px] uppercase tracking-widest text-muted-foreground">
+                Follow
+              </span>
+              {socials.map((s) => {
+                const Icon = socialIcon(s.platform)
+                return (
+                  <a
+                    key={s.id}
+                    href={s.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label={socialLabel(s.platform, s.label)}
+                    title={socialLabel(s.platform, s.label)}
+                    className="text-foreground hover:text-primary"
+                  >
+                    <Icon className="w-4 h-4" />
+                  </a>
+                )
+              })}
+            </div>
+          ) : null}
         </div>
       </div>
 

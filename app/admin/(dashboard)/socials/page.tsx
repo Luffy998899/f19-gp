@@ -1,46 +1,54 @@
 import { createClient } from "@/lib/supabase/server"
 import Link from "next/link"
-import Image from "next/image"
-import { Plus, Edit, Star } from "lucide-react"
+import { Plus, Edit, ExternalLink } from "lucide-react"
 import { DeleteButton } from "@/components/admin/delete-button"
-import { deleteProduct } from "@/app/actions/admin"
+import { deleteSocialLink } from "@/app/actions/admin"
+import type { SocialLink } from "@/lib/data"
 
 export const dynamic = "force-dynamic"
 
-export default async function AdminProductsPage() {
+export default async function AdminSocialsPage() {
   const supabase = await createClient()
-  const { data: products } = await supabase
-    .from("products")
+  const { data, error } = await supabase
+    .from("social_links")
     .select("*")
     .order("display_order", { ascending: true })
 
+  const socials: SocialLink[] = (data as SocialLink[]) || []
+
   return (
-    <div className="mx-auto max-w-6xl">
+    <div className="mx-auto max-w-4xl">
       <div className="mb-6 flex flex-wrap items-center justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-bold text-white">Products</h1>
+          <h1 className="text-3xl font-bold text-white">Socials</h1>
           <p className="mt-1 text-sm text-zinc-400">
-            Manage tires and wheels displayed on your site.
+            Manage the social media links shown in the site footer.
           </p>
         </div>
         <Link
-          href="/admin/products/new"
+          href="/admin/socials/new"
           className="inline-flex items-center gap-2 rounded-lg bg-red-600 px-4 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-red-700"
         >
           <Plus className="h-4 w-4" />
-          Add Product
+          Add social link
         </Link>
       </div>
 
-      {!products || products.length === 0 ? (
+      {error ? (
+        <div className="rounded-xl border border-red-600/30 bg-red-600/10 p-6 text-sm text-red-300">
+          Could not load social links: {error.message}. Make sure migration{" "}
+          <code className="font-mono">scripts/002_social_links.sql</code> has
+          been applied to this database.
+        </div>
+      ) : socials.length === 0 ? (
         <div className="rounded-xl border border-white/5 bg-zinc-900 p-12 text-center">
-          <p className="text-zinc-400">No products yet.</p>
+          <p className="text-zinc-400">No social links yet.</p>
           <Link
-            href="/admin/products/new"
+            href="/admin/socials/new"
             className="mt-4 inline-flex items-center gap-2 rounded-lg bg-red-600 px-4 py-2 text-sm font-semibold text-white"
           >
             <Plus className="h-4 w-4" />
-            Add your first product
+            Add your first link
           </Link>
         </div>
       ) : (
@@ -49,9 +57,9 @@ export default async function AdminProductsPage() {
             <table className="w-full text-sm">
               <thead className="border-b border-white/5 bg-white/[0.02] text-left">
                 <tr>
-                  <th className="px-4 py-3 font-medium text-zinc-400">Product</th>
-                  <th className="px-4 py-3 font-medium text-zinc-400">Category</th>
-                  <th className="px-4 py-3 font-medium text-zinc-400">Rating</th>
+                  <th className="px-4 py-3 font-medium text-zinc-400">Platform</th>
+                  <th className="px-4 py-3 font-medium text-zinc-400">URL</th>
+                  <th className="px-4 py-3 font-medium text-zinc-400">Order</th>
                   <th className="px-4 py-3 font-medium text-zinc-400">Status</th>
                   <th className="px-4 py-3 text-right font-medium text-zinc-400">
                     Actions
@@ -59,44 +67,32 @@ export default async function AdminProductsPage() {
                 </tr>
               </thead>
               <tbody className="divide-y divide-white/5">
-                {products.map((p) => (
-                  <tr key={p.id} className="hover:bg-white/[0.02]">
+                {socials.map((s) => (
+                  <tr key={s.id} className="hover:bg-white/[0.02]">
                     <td className="px-4 py-3">
-                      <div className="flex items-center gap-3">
-                        <div className="relative h-12 w-12 flex-shrink-0 overflow-hidden rounded-lg bg-zinc-800">
-                          {p.image_url && (
-                            <Image
-                              src={p.image_url || "/placeholder.svg"}
-                              alt={p.name}
-                              fill
-                              className="object-contain p-1 mix-blend-screen brightness-110"
-                            />
-                          )}
-                        </div>
-                        <div>
-                          <div className="flex items-center gap-2">
-                            <p className="font-medium text-white">{p.name}</p>
-                            {p.is_featured && (
-                              <span className="rounded bg-red-500/20 px-1.5 py-0.5 text-[10px] font-semibold uppercase text-red-300">
-                                Featured
-                              </span>
-                            )}
-                          </div>
-                          <p className="text-xs text-zinc-500">
-                            {p.size} {p.width ? `· ${p.width}` : ""}
-                          </p>
-                        </div>
-                      </div>
-                    </td>
-                    <td className="px-4 py-3 text-zinc-300">{p.category}</td>
-                    <td className="px-4 py-3">
-                      <div className="flex items-center gap-1 text-zinc-300">
-                        <Star className="h-3.5 w-3.5 fill-red-500 text-red-500" />
-                        {p.rating}
-                      </div>
+                      <p className="font-medium text-white capitalize">
+                        {s.platform}
+                      </p>
+                      {s.label ? (
+                        <p className="text-xs text-zinc-500">{s.label}</p>
+                      ) : null}
                     </td>
                     <td className="px-4 py-3">
-                      {p.is_active ? (
+                      <a
+                        href={s.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-1 text-zinc-300 hover:text-red-400 break-all"
+                      >
+                        <span className="truncate max-w-[28ch]">{s.url}</span>
+                        <ExternalLink className="h-3 w-3 flex-shrink-0" />
+                      </a>
+                    </td>
+                    <td className="px-4 py-3 text-zinc-300">
+                      {s.display_order}
+                    </td>
+                    <td className="px-4 py-3">
+                      {s.is_active ? (
                         <span className="rounded-full bg-emerald-500/20 px-2 py-0.5 text-[10px] font-semibold uppercase text-emerald-300">
                           Active
                         </span>
@@ -109,7 +105,7 @@ export default async function AdminProductsPage() {
                     <td className="px-4 py-3">
                       <div className="flex items-center justify-end gap-2">
                         <Link
-                          href={`/admin/products/${p.id}`}
+                          href={`/admin/socials/${s.id}`}
                           className="rounded-lg p-2 text-zinc-400 transition-colors hover:bg-white/5 hover:text-white"
                           aria-label="Edit"
                         >
@@ -118,9 +114,9 @@ export default async function AdminProductsPage() {
                         <DeleteButton
                           action={async () => {
                             "use server"
-                            return deleteProduct(p.id)
+                            return deleteSocialLink(s.id)
                           }}
-                          label={`Delete ${p.name}?`}
+                          label={`Delete ${s.platform}?`}
                         />
                       </div>
                     </td>

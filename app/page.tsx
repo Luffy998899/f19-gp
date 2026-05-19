@@ -13,16 +13,17 @@ import { FAQSection } from "@/components/faq-section"
 import { ContactSection } from "@/components/contact-section"
 import { Footer } from "@/components/footer"
 import { WhatsAppButton } from "@/components/whatsapp-button"
-import { getFaqs, getGalleryImages, getProducts, getSiteContent } from "@/lib/data"
+import { getFaqs, getGalleryImages, getProducts, getSiteContent, getSocialLinks } from "@/lib/data"
 
 export const revalidate = 0
 
 export default async function Home() {
-  const [products, gallery, faqs, content] = await Promise.all([
+  const [products, gallery, faqs, content, socials] = await Promise.all([
     getProducts(),
     getGalleryImages(),
     getFaqs(),
     getSiteContent(),
+    getSocialLinks(),
   ])
 
   return (
@@ -40,7 +41,7 @@ export default async function Home() {
       <GallerySection images={gallery} />
       <FAQSection faqs={faqs} />
       <ContactSection content={content} />
-      <Footer content={content} />
+      <Footer content={content} socials={socials} />
       <WhatsAppButton phone={content.whatsapp_number || "17789998473"} />
     </main>
   )

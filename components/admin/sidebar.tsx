@@ -14,6 +14,7 @@ import {
   Menu,
   X,
   ExternalLink,
+  Share2,
 } from "lucide-react"
 import { signOut } from "@/app/actions/admin"
 
@@ -22,6 +23,7 @@ const nav = [
   { href: "/admin/products", label: "Products", icon: Package },
   { href: "/admin/gallery", label: "Gallery", icon: Images },
   { href: "/admin/content", label: "Site Content", icon: FileText },
+  { href: "/admin/socials", label: "Socials", icon: Share2 },
   { href: "/admin/inquiries", label: "Inquiries", icon: Mail },
   { href: "/admin/faqs", label: "FAQs", icon: HelpCircle },
 ]

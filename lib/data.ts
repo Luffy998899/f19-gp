@@ -46,6 +46,15 @@ export type Inquiry = {
   created_at: string
 }
 
+export type SocialLink = {
+  id: string
+  platform: string
+  label: string | null
+  url: string
+  display_order: number
+  is_active: boolean
+}
+
 export async function getProducts(): Promise<Product[]> {
   const supabase = await createClient()
   const { data } = await supabase
@@ -84,4 +93,18 @@ export async function getSiteContent(): Promise<Record<string, string>> {
     map[row.key] = row.value
   }
   return map
+}
+
+export async function getSocialLinks(): Promise<SocialLink[]> {
+  const supabase = await createClient()
+  const { data, error } = await supabase
+    .from("social_links")
+    .select("*")
+    .eq("is_active", true)
+    .order("display_order", { ascending: true })
+  if (error) {
+    // Table may not exist yet on a stale DB; fail soft.
+    return []
+  }
+  return (data as SocialLink[]) || []
 }
