@@ -56,6 +56,19 @@ https://<your-domain>/setup
 to create the first admin account. The setup page is single-use and will
 become unavailable once an admin exists.
 
+## TechFeed catalog import (Vercel or manual)
+
+The import is **not** run during `pnpm build` (Vercel builds must stay fast).
+After running `scripts/003_techfeed_products.sql` in Supabase, import once from
+your machine or the VPS with production credentials in `.env.local`:
+
+```bash
+pnpm import:techfeed
+pnpm import:techfeed -- --force   # re-import
+```
+
+On a VPS, `deploy.sh` and `update.sh` run this automatically after build.
+
 ## Common operations
 
 ```bash

@@ -9,10 +9,14 @@
  * Usage:
  *   pnpm import:techfeed
  *   pnpm import:techfeed -- --force   # re-import even if already done
+ *
+ * Not run automatically during `pnpm build` — Vercel builds must stay fast.
+ * Use deploy/update scripts on the VPS, or run this command manually once
+ * after applying scripts/003_techfeed_products.sql in Supabase.
  */
 
 import { createClient } from "@supabase/supabase-js"
-import { execFileSync } from "node:child_process"
+import AdmZip from "adm-zip"
 import { existsSync } from "node:fs"
 import path from "node:path"
 import { fileURLToPath } from "node:url"
@@ -52,10 +56,12 @@ function readFeedXml(filename) {
   if (!existsSync(ZIP_PATH)) {
     throw new Error(`TechFeed.zip not found at ${ZIP_PATH}`)
   }
-  return execFileSync("unzip", ["-p", ZIP_PATH, filename], {
-    encoding: "utf8",
-    maxBuffer: 256 * 1024 * 1024,
-  })
+  const zip = new AdmZip(ZIP_PATH)
+  const entry = zip.getEntry(filename)
+  if (!entry) {
+    throw new Error(`${filename} not found inside TechFeed.zip`)
+  }
+  return entry.getData().toString("utf8")
 }
 
 function parseBlocks(xml) {
