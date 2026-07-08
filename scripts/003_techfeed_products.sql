@@ -4,9 +4,14 @@
 alter table public.products
   add column if not exists sku text;
 
-create unique index if not exists products_sku_unique
-  on public.products (sku)
-  where sku is not null;
+-- Supabase upsert(onConflict: "sku") needs a full unique constraint, not a partial index.
+drop index if exists public.products_sku_unique;
+
+alter table public.products
+  drop constraint if exists products_sku_key;
+
+alter table public.products
+  add constraint products_sku_key unique (sku);
 
 create index if not exists products_category_idx
   on public.products (category);

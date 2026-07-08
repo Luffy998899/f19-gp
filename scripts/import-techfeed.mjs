@@ -316,6 +316,12 @@ async function main() {
     const { error } = await supabase.from("products").upsert(batch, { onConflict: "sku" })
     if (error) {
       console.error(`Batch ${i / BATCH_SIZE + 1} failed:`, error.message)
+      if (error.message.includes("ON CONFLICT") || error.message.includes("unique")) {
+        console.error(
+          "\nRun scripts/003_techfeed_products.sql in the Supabase SQL Editor first,\n" +
+            "then re-run: pnpm import:techfeed\n",
+        )
+      }
       process.exit(1)
     }
     imported += batch.length
