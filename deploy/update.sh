@@ -87,6 +87,10 @@ echo "[3/4] Building the app..."
 sudo -u "$APP_USER" bash -lc "cd '$PROJECT_DIR' && rm -rf .next && pnpm build"
 
 echo
+echo "[3.5/4] Importing TechFeed catalog (if not already imported)..."
+sudo -u "$APP_USER" bash -lc "cd '$PROJECT_DIR' && pnpm import:techfeed"
+
+echo
 echo "[4/4] Restarting service..."
 systemctl restart "$SERVICE_NAME"
 sleep 2

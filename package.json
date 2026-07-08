@@ -6,7 +6,9 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "import:techfeed": "node scripts/import-techfeed.mjs",
+    "postbuild": "node scripts/import-techfeed.mjs"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.9.1",
