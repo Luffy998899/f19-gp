@@ -3,11 +3,11 @@
 import Image from "next/image"
 import { useState } from "react"
 import { ArrowUpRight, MessageCircle, Pause, Play } from "lucide-react"
-import type { Product } from "@/lib/data"
+import type { CatalogProduct } from "@/lib/data"
 import { QuoteModal } from "@/components/quote-modal"
 
 interface ProductsCarouselProps {
-  products: Product[]
+  products: CatalogProduct[]
 }
 
 export function ProductsCarousel({ products }: ProductsCarouselProps) {

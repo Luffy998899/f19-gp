@@ -9,9 +9,10 @@ Nginx + Let's Encrypt SSL in one command.
 2. A **domain name** whose A record (and optional `www` CNAME/A) points to
    the VPS public IP. SSL issuance will fail until DNS has propagated.
 3. A **Supabase project** with the schema bootstrapped. From your local
-   machine or the Supabase SQL editor, run once:
+   machine or the Supabase SQL editor, run once (in order):
    ```
    scripts/000_bootstrap_schema.sql
+   scripts/003_techfeed_products.sql
    ```
    Grab these three values from Supabase **Settings → API**:
    - `NEXT_PUBLIC_SUPABASE_URL`
@@ -38,9 +39,12 @@ The script will:
 1. Install Node.js 20, pnpm, Nginx, and Certbot.
 2. Open ports 80/443 in UFW.
 3. Write `.env.local`, install dependencies, and run `pnpm build`.
-4. Create a `formula19` systemd service running on `127.0.0.1:3000`.
-5. Configure Nginx as a reverse proxy for your domain.
-6. Issue and auto-renew a Let's Encrypt SSL certificate with HTTP→HTTPS
+4. Import the **TechFeed.zip** catalog automatically (`pnpm import:techfeed`).
+   Wheels, tires, accessories, and lighting are upserted by SKU. Prices are
+   never imported or shown — customers request quotes via WhatsApp.
+5. Create a `formula19` systemd service running on `127.0.0.1:3000`.
+6. Configure Nginx as a reverse proxy for your domain.
+7. Issue and auto-renew a Let's Encrypt SSL certificate with HTTP→HTTPS
    redirect enabled.
 
 When it finishes, open:
@@ -51,6 +55,19 @@ https://<your-domain>/setup
 
 to create the first admin account. The setup page is single-use and will
 become unavailable once an admin exists.
+
+## TechFeed catalog import (Vercel or manual)
+
+The import is **not** run during `pnpm build` (Vercel builds must stay fast).
+After running `scripts/003_techfeed_products.sql` in Supabase, import once from
+your machine or the VPS with production credentials in `.env.local`:
+
+```bash
+pnpm import:techfeed
+pnpm import:techfeed -- --force   # re-import
+```
+
+On a VPS, `deploy.sh` and `update.sh` run this automatically after build.
 
 ## Common operations
 

@@ -13,13 +13,21 @@ import { FAQSection } from "@/components/faq-section"
 import { ContactSection } from "@/components/contact-section"
 import { Footer } from "@/components/footer"
 import { WhatsAppButton } from "@/components/whatsapp-button"
-import { getFaqs, getGalleryImages, getProducts, getSiteContent, getSocialLinks } from "@/lib/data"
+import {
+  getFaqs,
+  getFeaturedProducts,
+  getGalleryImages,
+  getProductCount,
+  getSiteContent,
+  getSocialLinks,
+} from "@/lib/data"
 
 export const revalidate = 0
 
 export default async function Home() {
-  const [products, gallery, faqs, content, socials] = await Promise.all([
-    getProducts(),
+  const [featured, productCount, gallery, faqs, content, socials] = await Promise.all([
+    getFeaturedProducts(),
+    getProductCount(),
     getGalleryImages(),
     getFaqs(),
     getSiteContent(),
@@ -31,10 +39,10 @@ export default async function Home() {
       <Navbar content={content} />
       <HeroSection content={content} />
       <MarqueeStrip />
-      <ProductsCarousel products={products} />
+      <ProductsCarousel products={featured} />
       <CategoriesGrid />
       <ServicesSection />
-      <ProductsSection products={products} />
+      <ProductsSection initialTotal={productCount} />
       <TestimonialsSection />
       <BrandLogos />
       <AboutSection content={content} />

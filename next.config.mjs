@@ -5,6 +5,12 @@ const nextConfig = {
   },
   images: {
     unoptimized: true,
+    remotePatterns: [
+      { protocol: "https", hostname: "media.wheelpros.com" },
+      { protocol: "https", hostname: "assets.wheelpros.com" },
+      { protocol: "https", hostname: "images.wheelpros.com" },
+      { protocol: "https", hostname: "5129608.app.netsuite.com" },
+    ],
   },
 }
 

@@ -141,6 +141,10 @@ echo "[3/6] Installing dependencies and building the app..."
 # page (e.g. a cached 404) from a previous build.
 sudo -u "$APP_USER" bash -lc "cd '$PROJECT_DIR' && rm -rf .next && pnpm install --no-frozen-lockfile && pnpm build"
 
+echo
+echo "[3.5/6] Importing TechFeed catalog (wheels, tires, accessories, lighting)..."
+sudo -u "$APP_USER" bash -lc "cd '$PROJECT_DIR' && pnpm import:techfeed"
+
 # ---- 4. systemd service ----------------------------------------------------
 echo
 echo "[4/6] Creating systemd service '$SERVICE_NAME'..."
