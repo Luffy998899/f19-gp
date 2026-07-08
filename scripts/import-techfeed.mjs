@@ -17,7 +17,7 @@
 
 import { createClient } from "@supabase/supabase-js"
 import AdmZip from "adm-zip"
-import { existsSync } from "node:fs"
+import { existsSync, readFileSync } from "node:fs"
 import path from "node:path"
 import { fileURLToPath } from "node:url"
 
@@ -25,6 +25,43 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url))
 const ROOT = path.resolve(__dirname, "..")
 const ZIP_PATH = path.join(ROOT, "TechFeed.zip")
 const BATCH_SIZE = 400
+
+/** Next.js loads .env.local automatically; standalone Node scripts do not. */
+function loadEnvFiles() {
+  for (const name of [".env.local", ".env"]) {
+    const filePath = path.join(ROOT, name)
+    if (!existsSync(filePath)) continue
+    let raw = readFileSync(filePath)
+    // Windows Notepad sometimes saves UTF-16 LE.
+    if (raw[0] === 0xff && raw[1] === 0xfe) {
+      raw = raw.slice(2)
+      const content = raw.toString("utf16le")
+      applyEnvContent(content)
+      continue
+    }
+    applyEnvContent(raw.toString("utf8").replace(/^\uFEFF/, ""))
+  }
+}
+
+function applyEnvContent(content) {
+  for (const line of content.split(/\r?\n/)) {
+    const trimmed = line.trim()
+    if (!trimmed || trimmed.startsWith("#")) continue
+    const eq = trimmed.indexOf("=")
+    if (eq === -1) continue
+    const key = trimmed.slice(0, eq).trim()
+    let value = trimmed.slice(eq + 1).trim()
+    if (
+      (value.startsWith('"') && value.endsWith('"')) ||
+      (value.startsWith("'") && value.endsWith("'"))
+    ) {
+      value = value.slice(1, -1)
+    }
+    if (process.env[key] === undefined) process.env[key] = value
+  }
+}
+
+loadEnvFiles()
 
 const FEEDS = [
   { file: "Wheel_TechGuide.xml", category: "Wheels", type: "wheel" },
