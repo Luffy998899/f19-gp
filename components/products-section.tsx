@@ -7,11 +7,8 @@ import type { CatalogCategory, CatalogProduct } from "@/lib/data"
 import { QuoteModal } from "@/components/quote-modal"
 
 const CATEGORIES: { id: CatalogCategory; label: string }[] = [
-  { id: "all", label: "All" },
-  { id: "Wheels", label: "Wheels" },
-  { id: "Tires", label: "Tires" },
-  { id: "Accessories", label: "Accessories" },
-  { id: "Lighting", label: "Lighting" },
+  { id: "all", label: "All Rims" },
+  { id: "Rims", label: "Rims" },
 ]
 
 interface ProductsSectionProps {

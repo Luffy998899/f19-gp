@@ -1,18 +1,14 @@
 #!/usr/bin/env node
 /**
- * Import WheelPros TechFeed XML catalog into Supabase products.
+ * Import WheelPros TechFeed rim/wheel catalog into Supabase products.
  *
- * Reads TechFeed.zip from the project root, parses Wheel/Tire/Accessory/Lighting
- * feeds, and upserts products by SKU. MapPrice_TechGuide.xml is intentionally
- * skipped — prices are never stored or exposed to customers.
+ * Reads Wheel_TechGuide.xml from TechFeed.zip only (rims — no tires,
+ * accessories, or lighting). MapPrice_TechGuide.xml is skipped; prices are
+ * never stored or exposed to customers.
  *
  * Usage:
  *   pnpm import:techfeed
  *   pnpm import:techfeed -- --force   # re-import even if already done
- *
- * Not run automatically during `pnpm build` — Vercel builds must stay fast.
- * Use deploy/update scripts on the VPS, or run this command manually once
- * after applying scripts/003_techfeed_products.sql in Supabase.
  */
 
 import { createClient } from "@supabase/supabase-js"
@@ -25,6 +21,8 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url))
 const ROOT = path.resolve(__dirname, "..")
 const ZIP_PATH = path.join(ROOT, "TechFeed.zip")
 const BATCH_SIZE = 400
+const RIM_CATEGORY = "Rims"
+const WHEEL_FEED = "Wheel_TechGuide.xml"
 
 /** Next.js loads .env.local automatically; standalone Node scripts do not. */
 function loadEnvFiles() {
@@ -32,11 +30,9 @@ function loadEnvFiles() {
     const filePath = path.join(ROOT, name)
     if (!existsSync(filePath)) continue
     let raw = readFileSync(filePath)
-    // Windows Notepad sometimes saves UTF-16 LE.
     if (raw[0] === 0xff && raw[1] === 0xfe) {
       raw = raw.slice(2)
-      const content = raw.toString("utf16le")
-      applyEnvContent(content)
+      applyEnvContent(raw.toString("utf16le"))
       continue
     }
     applyEnvContent(raw.toString("utf8").replace(/^\uFEFF/, ""))
@@ -62,13 +58,6 @@ function applyEnvContent(content) {
 }
 
 loadEnvFiles()
-
-const FEEDS = [
-  { file: "Wheel_TechGuide.xml", category: "Wheels", type: "wheel" },
-  { file: "Tire_TechGuide.xml", category: "Tires", type: "tire" },
-  { file: "Accessory_TechGuide.xml", category: "Accessories", type: "accessory" },
-  { file: "Lighting_TechGuide.xml", category: "Lighting", type: "lighting" },
-]
 
 const force = process.argv.includes("--force")
 
@@ -109,7 +98,7 @@ function parseBlocks(xml) {
     .filter(Boolean)
 }
 
-function mapWheel(block, displayOrder) {
+function mapRim(block, displayOrder) {
   const sku = tagValue(block, "sku")
   if (!sku) return null
 
@@ -125,7 +114,7 @@ function mapWheel(block, displayOrder) {
   return {
     sku,
     name: tagValue(block, "product_desc") || tagValue(block, "style") || sku,
-    category: "Wheels",
+    category: RIM_CATEGORY,
     description: descriptionParts || null,
     size: tagValue(block, "size_desc") || null,
     width: tagValue(block, "width") || null,
@@ -146,125 +135,26 @@ function mapWheel(block, displayOrder) {
   }
 }
 
-function mapTire(block, displayOrder) {
-  const sku = tagValue(block, "sku")
-  if (!sku) return null
-
-  const brand = tagValue(block, "brand_desc")
-  const terrain = tagValue(block, "terrain")
-  const load = tagValue(block, "load_index")
-  const speed = tagValue(block, "speed_rating")
-
-  const descriptionParts = [brand, terrain, load && speed ? `${load}${speed}` : ""]
-    .filter(Boolean)
-    .join(" · ")
-
-  return {
-    sku,
-    name: tagValue(block, "tire_description") || tagValue(block, "display_model_no") || sku,
-    category: "Tires",
-    description: descriptionParts || null,
-    size: tagValue(block, "tire_size") || tagValue(block, "rim_diameter") || null,
-    width: tagValue(block, "section_width") || null,
-    profile: load && speed ? `${load}${speed}` : null,
-    image_url: firstImage(tagValue(block, "image_url")),
-    price: null,
-    rating: 5,
-    reviews_count: 0,
-    is_featured: false,
-    is_active: true,
-    display_order: displayOrder,
-    _featuredKey: `${brand}:${tagValue(block, "display_model_no")}`,
-  }
-}
-
-function mapAccessory(block, displayOrder) {
-  const sku = tagValue(block, "sku")
-  if (!sku) return null
-
-  const brand = tagValue(block, "brand_desc")
-  const subType = tagValue(block, "product_sub_type")
-
-  return {
-    sku,
-    name: tagValue(block, "product_desc") || sku,
-    category: subType ? `Accessories · ${subType}` : "Accessories",
-    description: brand || null,
-    size: null,
-    width: null,
-    profile: null,
-    image_url: firstImage(tagValue(block, "image_url")),
-    price: null,
-    rating: 5,
-    reviews_count: 0,
-    is_featured: false,
-    is_active: true,
-    display_order: displayOrder,
-    _featuredKey: `${brand}:${subType}`,
-  }
-}
-
-function mapLighting(block, displayOrder) {
-  const sku = tagValue(block, "SKU") || tagValue(block, "sku")
-  if (!sku) return null
-
-  const brand = tagValue(block, "Brand")
-  const subcategory = tagValue(block, "Subcategory")
-
-  return {
-    sku,
-    name: tagValue(block, "DisplayName") || sku,
-    category: subcategory ? `Lighting · ${subcategory}` : "Lighting",
-    description: tagValue(block, "DetailedDescription") || brand || null,
-    size: null,
-    width: null,
-    profile: null,
-    image_url: firstImage(
-      tagValue(block, "ImageLink1"),
-      tagValue(block, "ImageLink2"),
-      tagValue(block, "ImageLink3"),
-    ),
-    price: null,
-    rating: 5,
-    reviews_count: 0,
-    is_featured: false,
-    is_active: true,
-    display_order: displayOrder,
-    _featuredKey: `${brand}:${subcategory}`,
-  }
-}
-
-function mapRecord(type, block, displayOrder) {
-  switch (type) {
-    case "wheel":
-      return mapWheel(block, displayOrder)
-    case "tire":
-      return mapTire(block, displayOrder)
-    case "accessory":
-      return mapAccessory(block, displayOrder)
-    case "lighting":
-      return mapLighting(block, displayOrder)
-    default:
-      return null
-  }
-}
-
-function markFeatured(products, perCategory = 8) {
-  const seen = new Map()
+function markFeatured(products, limit = 16) {
+  const seen = new Set()
+  let count = 0
   for (const product of products) {
-    if (!product.image_url) continue
-    const bucket = product.category.split(" · ")[0]
-    const count = seen.get(bucket) || 0
-    if (count >= perCategory) continue
+    if (!product.image_url || count >= limit) continue
     const key = product._featuredKey || product.sku
-    const usedKeys = seen.get(`${bucket}:keys`) || new Set()
-    if (usedKeys.has(key)) continue
-    usedKeys.add(key)
-    seen.set(`${bucket}:keys`, usedKeys)
+    if (seen.has(key)) continue
+    seen.add(key)
     product.is_featured = true
-    seen.set(bucket, count + 1)
+    count++
   }
   return products
+}
+
+async function clearPriorTechFeedProducts(supabase) {
+  console.log("Removing prior TechFeed imports (keeping manual admin products without SKU)…")
+  const { error } = await supabase.from("products").delete().not("sku", "is", null)
+  if (error) {
+    throw new Error(`Could not clear prior TechFeed products: ${error.message}`)
+  }
 }
 
 async function main() {
@@ -286,29 +176,28 @@ async function main() {
       .eq("key", "techfeed_imported_at")
       .maybeSingle()
     if (flag?.value) {
-      console.log(`TechFeed already imported at ${flag.value}. Use --force to re-import.`)
+      console.log(`TechFeed rims already imported at ${flag.value}. Use --force to re-import.`)
       return
     }
   }
 
-  console.log("Parsing TechFeed.zip …")
+  await clearPriorTechFeedProducts(supabase)
+
+  console.log(`Parsing TechFeed.zip (${WHEEL_FEED} — rims only)…`)
+  const xml = readFeedXml(WHEEL_FEED)
+  const blocks = parseBlocks(xml)
   const allProducts = []
   let order = 0
 
-  for (const feed of FEEDS) {
-    console.log(`  • ${feed.file}`)
-    const xml = readFeedXml(feed.file)
-    const blocks = parseBlocks(xml)
-    for (const block of blocks) {
-      const mapped = mapRecord(feed.type, block, order++)
-      if (mapped) allProducts.push(mapped)
-    }
+  for (const block of blocks) {
+    const mapped = mapRim(block, order++)
+    if (mapped) allProducts.push(mapped)
   }
 
   markFeatured(allProducts)
 
   const payload = allProducts.map(({ _featuredKey, ...product }) => product)
-  console.log(`Upserting ${payload.length.toLocaleString()} products …`)
+  console.log(`Upserting ${payload.length.toLocaleString()} rims …`)
 
   let imported = 0
   for (let i = 0; i < payload.length; i += BATCH_SIZE) {
@@ -319,7 +208,7 @@ async function main() {
       if (error.message.includes("ON CONFLICT") || error.message.includes("unique")) {
         console.error(
           "\nRun scripts/003_techfeed_products.sql in the Supabase SQL Editor first,\n" +
-            "then re-run: pnpm import:techfeed\n",
+            "then re-run: pnpm import:techfeed -- --force\n",
         )
       }
       process.exit(1)
@@ -337,8 +226,8 @@ async function main() {
   })
 
   const featuredCount = payload.filter((p) => p.is_featured).length
-  console.log(`Imported ${payload.length.toLocaleString()} products (${featuredCount} featured).`)
-  console.log("Prices were not imported — customers request quotes via WhatsApp.")
+  console.log(`Imported ${payload.length.toLocaleString()} rims (${featuredCount} featured).`)
+  console.log("Tires, accessories, and lighting were skipped. Prices were not imported.")
 }
 
 main().catch((err) => {

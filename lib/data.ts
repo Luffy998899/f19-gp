@@ -71,22 +71,11 @@ export type CatalogPage = {
   category: string
 }
 
-const CATALOG_CATEGORIES = ["Wheels", "Tires", "Accessories", "Lighting"] as const
+const CATALOG_CATEGORIES = ["Rims"] as const
 export type CatalogCategory = (typeof CATALOG_CATEGORIES)[number] | "all"
 
 export function isCatalogCategory(value: string): value is CatalogCategory {
   return value === "all" || (CATALOG_CATEGORIES as readonly string[]).includes(value)
-}
-
-function applyCategoryFilter<T extends { ilike: Function; eq: Function }>(
-  query: T,
-  category: CatalogCategory,
-): T {
-  if (category === "all") return query
-  if (category === "Accessories" || category === "Lighting") {
-    return query.ilike("category", `${category}%`) as T
-  }
-  return query.eq("category", category) as T
 }
 
 export async function getFeaturedProducts(limit = 16): Promise<CatalogProduct[]> {
@@ -95,6 +84,7 @@ export async function getFeaturedProducts(limit = 16): Promise<CatalogProduct[]>
     .from("products")
     .select(PUBLIC_PRODUCT_COLUMNS)
     .eq("is_active", true)
+    .eq("category", "Rims")
     .eq("is_featured", true)
     .not("image_url", "is", null)
     .order("display_order", { ascending: true })
@@ -118,8 +108,11 @@ export async function getCatalogPage(options: {
     .from("products")
     .select(PUBLIC_PRODUCT_COLUMNS, { count: "exact" })
     .eq("is_active", true)
+    .eq("category", "Rims")
 
-  query = applyCategoryFilter(query, category)
+  if (category !== "all") {
+    query = query.eq("category", category)
+  }
 
   const { data, count, error } = await query
     .order("display_order", { ascending: true })
@@ -144,6 +137,7 @@ export async function getProductCount(): Promise<number> {
     .from("products")
     .select("id", { count: "exact", head: true })
     .eq("is_active", true)
+    .eq("category", "Rims")
   return count ?? 0
 }
 
