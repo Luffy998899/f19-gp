@@ -71,6 +71,12 @@ export type CatalogPage = {
   category: string
 }
 
+export type CatalogFilters = {
+  sizes: string[]
+  widths: string[]
+  profiles: string[]
+}
+
 const CATALOG_CATEGORIES = ["Wheels", "Tires", "Accessories", "Lighting"] as const
 export type CatalogCategory = (typeof CATALOG_CATEGORIES)[number] | "all"
 
@@ -102,10 +108,41 @@ export async function getFeaturedProducts(limit = 16): Promise<CatalogProduct[]>
   return (data as CatalogProduct[]) || []
 }
 
+export async function getCatalogFilters(category: CatalogCategory = "Wheels"): Promise<CatalogFilters> {
+  const supabase = await createClient()
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  let q: any = supabase
+    .from("products")
+    .select("size, width, profile")
+    .eq("is_active", true)
+
+  if (category !== "all") {
+    if (category === "Accessories" || category === "Lighting") {
+      q = q.ilike("category", `${category}%`)
+    } else {
+      q = q.eq("category", category)
+    }
+  }
+
+  const { data } = await q
+  const rows = (data || []) as { size: string | null; width: string | null; profile: string | null }[]
+  const toSorted = (arr: (string | null)[]) =>
+    [...new Set(arr.filter((v): v is string => Boolean(v)))].sort()
+
+  return {
+    sizes: toSorted(rows.map((p) => p.size)),
+    widths: toSorted(rows.map((p) => p.width)),
+    profiles: toSorted(rows.map((p) => p.profile)),
+  }
+}
+
 export async function getCatalogPage(options: {
   page?: number
   limit?: number
   category?: CatalogCategory
+  size?: string
+  width?: string
+  profile?: string
 }): Promise<CatalogPage> {
   const page = Math.max(1, options.page ?? 1)
   const limit = Math.min(48, Math.max(12, options.limit ?? 24))
@@ -120,6 +157,10 @@ export async function getCatalogPage(options: {
     .eq("is_active", true)
 
   query = applyCategoryFilter(query, category)
+
+  if (options.size) query = query.eq("size", options.size) as typeof query
+  if (options.width) query = query.eq("width", options.width) as typeof query
+  if (options.profile) query = query.eq("profile", options.profile) as typeof query
 
   const { data, count, error } = await query
     .order("display_order", { ascending: true })

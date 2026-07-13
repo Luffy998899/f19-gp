@@ -9,7 +9,10 @@ export async function GET(request: Request) {
   const limit = Number(searchParams.get("limit") || "24")
   const rawCategory = searchParams.get("category") || "all"
   const category = isCatalogCategory(rawCategory) ? rawCategory : "all"
+  const size = searchParams.get("size") || undefined
+  const width = searchParams.get("width") || undefined
+  const profile = searchParams.get("profile") || undefined
 
-  const result = await getCatalogPage({ page, limit, category })
+  const result = await getCatalogPage({ page, limit, category, size, width, profile })
   return NextResponse.json(result)
 }
