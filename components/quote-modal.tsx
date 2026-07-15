@@ -56,7 +56,7 @@ export function QuoteModal({ open, onClose, productName }: QuoteModalProps) {
       role="dialog"
       aria-modal="true"
       aria-label="Request a quote"
-      className="fixed inset-0 z-50 flex items-end sm:items-center justify-center"
+      className="fixed inset-0 z-[200] flex items-end sm:items-center justify-center"
       onMouseDown={(e) => {
         if (e.target === e.currentTarget) onClose()
       }}

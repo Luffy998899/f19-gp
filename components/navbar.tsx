@@ -3,7 +3,8 @@
 import { useEffect, useState } from "react"
 import Link from "next/link"
 import Image from "next/image"
-import { Menu, X, Phone } from "lucide-react"
+import { Menu, X, Phone, Search } from "lucide-react"
+import { SearchOverlay } from "@/components/search-overlay"
 
 interface NavbarProps {
   content: Record<string, string>
@@ -20,6 +21,7 @@ const nav = [
 
 export function Navbar({ content }: NavbarProps) {
   const [open, setOpen] = useState(false)
+  const [searchOpen, setSearchOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
 
   useEffect(() => {
@@ -61,10 +63,10 @@ export function Navbar({ content }: NavbarProps) {
             <Image
               src="/images/logo.png"
               alt="Formula 19 — All About Tires"
-              width={220}
-              height={64}
+              width={280}
+              height={80}
               priority
-              className="h-12 w-auto md:h-14 object-contain"
+              className="h-16 w-auto md:h-20 object-contain"
             />
           </Link>
 
@@ -84,6 +86,14 @@ export function Navbar({ content }: NavbarProps) {
           </nav>
 
           <div className="flex items-center gap-3">
+            <button
+              type="button"
+              onClick={() => setSearchOpen(true)}
+              className="w-10 h-10 flex items-center justify-center text-foreground hover:text-primary transition-colors"
+              aria-label="Search products"
+            >
+              <Search className="w-5 h-5" />
+            </button>
             <a
               href="#contact"
               className="hidden md:inline-flex items-center gap-2 bg-primary text-primary-foreground px-5 py-3 font-display text-base tracking-wider uppercase hover:bg-foreground hover:text-background transition-colors"
@@ -128,6 +138,8 @@ export function Navbar({ content }: NavbarProps) {
           </div>
         )}
       </header>
+
+      <SearchOverlay open={searchOpen} onClose={() => setSearchOpen(false)} />
     </>
   )
 }

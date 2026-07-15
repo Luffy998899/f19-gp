@@ -15,10 +15,13 @@ export function ProductsCarousel({ products }: ProductsCarouselProps) {
   const [quoteFor, setQuoteFor] = useState<string | null>(null)
   const [open, setOpen] = useState(false)
 
-  if (!products.length) return null
+  // Filter out tyres/tires from the best-sellers carousel
+  const filtered = products.filter((p) => p.category?.toLowerCase() !== "tires")
+
+  if (!filtered.length) return null
 
   // Duplicate the list so the marquee can loop seamlessly
-  const loop = [...products, ...products]
+  const loop = [...filtered, ...filtered]
 
   function openQuote(name: string) {
     setQuoteFor(name)
