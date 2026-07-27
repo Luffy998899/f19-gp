@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react"
 import Link from "next/link"
 import Image from "next/image"
+import { usePathname } from "next/navigation"
 import { Menu, X, Phone, Search } from "lucide-react"
 import { SearchOverlay } from "@/components/search-overlay"
 
@@ -13,16 +14,25 @@ interface NavbarProps {
 const nav = [
   { label: "Tires", href: "#products", num: "01" },
   { label: "Services", href: "#services", num: "02" },
-  { label: "Garage", href: "#about", num: "03" },
-  { label: "Gallery", href: "#gallery", num: "04" },
-  { label: "FAQ", href: "#faq", num: "05" },
-  { label: "Contact", href: "#contact", num: "06" },
+  { label: "Financing", href: "/financing", num: "03" },
+  { label: "Garage", href: "#about", num: "04" },
+  { label: "Gallery", href: "#gallery", num: "05" },
+  { label: "FAQ", href: "#faq", num: "06" },
+  { label: "Contact", href: "#contact", num: "07" },
 ]
 
 export function Navbar({ content }: NavbarProps) {
   const [open, setOpen] = useState(false)
   const [searchOpen, setSearchOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
+  const pathname = usePathname()
+  const isHome = pathname === "/"
+
+  // The homepage sections are anchors. From any other route (e.g. /financing)
+  // they have to be rewritten as root-relative links or they resolve against
+  // the current path and go nowhere.
+  const resolve = (href: string) =>
+    href.startsWith("#") && !isHome ? `/${href}` : href
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 40)
@@ -59,7 +69,11 @@ export function Navbar({ content }: NavbarProps) {
         }`}
       >
         <div className="mx-auto max-w-[1400px] flex items-center justify-between px-6 h-20">
-          <Link href="#top" className="flex items-center group" aria-label="Formula 19 — All About Tires">
+          <Link
+            href={isHome ? "#top" : "/"}
+            className="flex items-center group"
+            aria-label="Formula 19 — All About Tires"
+          >
             <Image
               src="/images/logo.png"
               alt="Formula 19 — All About Tires"
@@ -70,11 +84,11 @@ export function Navbar({ content }: NavbarProps) {
             />
           </Link>
 
-          <nav className="hidden lg:flex items-center gap-1">
+          <nav className="hidden xl:flex items-center gap-1">
             {nav.map((item) => (
               <a
                 key={item.label}
-                href={item.href}
+                href={resolve(item.href)}
                 className="group flex items-center gap-1.5 px-3 py-2 text-sm font-medium uppercase tracking-wider text-foreground hover:text-primary transition-colors"
               >
                 <span className="font-mono text-[10px] text-muted-foreground group-hover:text-primary">
@@ -95,14 +109,14 @@ export function Navbar({ content }: NavbarProps) {
               <Search className="w-5 h-5" />
             </button>
             <a
-              href="#contact"
+              href={resolve("#contact")}
               className="hidden md:inline-flex items-center gap-2 bg-primary text-primary-foreground px-5 py-3 font-display text-base tracking-wider uppercase hover:bg-foreground hover:text-background transition-colors"
             >
               Book Service
             </a>
             <button
               onClick={() => setOpen(!open)}
-              className="lg:hidden w-10 h-10 flex items-center justify-center text-foreground"
+              className="xl:hidden w-10 h-10 flex items-center justify-center text-foreground"
               aria-label="Toggle menu"
             >
               {open ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
@@ -115,12 +129,12 @@ export function Navbar({ content }: NavbarProps) {
 
         {/* Mobile menu */}
         {open && (
-          <div className="lg:hidden border-t border-border bg-background">
+          <div className="xl:hidden border-t border-border bg-background">
             <div className="px-6 py-6 space-y-1">
               {nav.map((item) => (
                 <a
                   key={item.label}
-                  href={item.href}
+                  href={resolve(item.href)}
                   onClick={() => setOpen(false)}
                   className="flex items-center gap-3 py-3 text-foreground hover:text-primary border-b border-border"
                 >

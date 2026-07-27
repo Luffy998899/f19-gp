@@ -19,7 +19,7 @@ export function Footer({ content, socials = [] }: FooterProps) {
       {/* Massive wordmark */}
       <div className="border-b border-border py-16 lg:py-24 overflow-hidden">
         <div className="mx-auto max-w-[1400px] px-6">
-          <Link href="#top" className="block group">
+          <Link href="/" className="block group">
             <div className="font-display text-[clamp(4rem,18vw,18rem)] leading-[0.8] tracking-[-0.02em] uppercase">
               FORMULA <span className="text-primary">19</span>
             </div>
@@ -70,10 +70,10 @@ export function Footer({ content, socials = [] }: FooterProps) {
             / Catalog
           </div>
           <ul className="space-y-3 text-sm">
-            <li><a href="#products" className="text-muted-foreground hover:text-primary">Performance Tires</a></li>
-            <li><a href="#products" className="text-muted-foreground hover:text-primary">Alloy Wheels</a></li>
-            <li><a href="#products" className="text-muted-foreground hover:text-primary">Winter Range</a></li>
-            <li><a href="#products" className="text-muted-foreground hover:text-primary">Off-Road</a></li>
+            <li><a href="/#products" className="text-muted-foreground hover:text-primary">Performance Tires</a></li>
+            <li><a href="/#products" className="text-muted-foreground hover:text-primary">Alloy Wheels</a></li>
+            <li><a href="/#products" className="text-muted-foreground hover:text-primary">Winter Range</a></li>
+            <li><a href="/#products" className="text-muted-foreground hover:text-primary">Off-Road</a></li>
           </ul>
         </div>
 
@@ -82,10 +82,15 @@ export function Footer({ content, socials = [] }: FooterProps) {
             / Shop
           </div>
           <ul className="space-y-3 text-sm">
-            <li><a href="#about" className="text-muted-foreground hover:text-primary">About</a></li>
-            <li><a href="#services" className="text-muted-foreground hover:text-primary">Services</a></li>
-            <li><a href="#gallery" className="text-muted-foreground hover:text-primary">Gallery</a></li>
-            <li><a href="#contact" className="text-muted-foreground hover:text-primary">Contact</a></li>
+            <li><a href="/#about" className="text-muted-foreground hover:text-primary">About</a></li>
+            <li><a href="/#services" className="text-muted-foreground hover:text-primary">Services</a></li>
+            <li>
+              <Link href="/financing" className="text-muted-foreground hover:text-primary">
+                Financing
+              </Link>
+            </li>
+            <li><a href="/#gallery" className="text-muted-foreground hover:text-primary">Gallery</a></li>
+            <li><a href="/#contact" className="text-muted-foreground hover:text-primary">Contact</a></li>
             <li>
               <Link href="/admin/login" className="text-muted-foreground/60 hover:text-primary">
                 Staff Login

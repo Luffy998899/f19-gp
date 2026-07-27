@@ -5,6 +5,7 @@ import { ProductsCarousel } from "@/components/products-carousel"
 import { CategoriesGrid } from "@/components/categories-grid"
 import { MarqueeStrip } from "@/components/marquee-strip"
 import { ServicesSection } from "@/components/services-section"
+import { FinancingBanner } from "@/components/financing-banner"
 import { ProductsSection } from "@/components/products-section"
 import { TestimonialsSection } from "@/components/testimonials-section"
 import { AboutSection } from "@/components/about-section"
@@ -42,6 +43,7 @@ export default async function Home() {
       <ProductsCarousel products={featured} />
       <CategoriesGrid />
       <ServicesSection />
+      <FinancingBanner />
       <ProductsSection initialTotal={productCount} />
       <TestimonialsSection />
       <BrandLogos />
